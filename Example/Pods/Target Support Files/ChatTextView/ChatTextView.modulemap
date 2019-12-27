@@ -1,0 +1,6 @@
+framework module ChatTextView {
+  umbrella header "ChatTextView-umbrella.h"
+
+  export *
+  module * { export * }
+}

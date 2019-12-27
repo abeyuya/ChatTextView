@@ -28,7 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0AA8226DCFF2928E9D625DAC /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		0AA8226DCFF2928E9D625DAC /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		5736E5314B2407F4D01803FF /* Pods-ChatTextView_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatTextView_Example.release.xcconfig"; path = "Target Support Files/Pods-ChatTextView_Example/Pods-ChatTextView_Example.release.xcconfig"; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* ChatTextView_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatTextView_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -40,9 +40,9 @@
 		607FACE51AFB9204008FA782 /* ChatTextView_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChatTextView_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
-		BF8ABDCE330A794EBDDADE2C /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		BF8ABDCE330A794EBDDADE2C /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		CEFD5281E90F490898D89C0B /* Pods-ChatTextView_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatTextView_Tests.release.xcconfig"; path = "Target Support Files/Pods-ChatTextView_Tests/Pods-ChatTextView_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		D059CF2F2C914E4A2CC50D51 /* ChatTextView.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = ChatTextView.podspec; path = ../ChatTextView.podspec; sourceTree = "<group>"; };
+		D059CF2F2C914E4A2CC50D51 /* ChatTextView.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ChatTextView.podspec; path = ../ChatTextView.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		D1E26F2650FA288D2BBA5E7B /* Pods-ChatTextView_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatTextView_Example.debug.xcconfig"; path = "Target Support Files/Pods-ChatTextView_Example/Pods-ChatTextView_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		E795279691677750350ACF5D /* Pods-ChatTextView_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatTextView_Tests.debug.xcconfig"; path = "Target Support Files/Pods-ChatTextView_Tests/Pods-ChatTextView_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		E8FD7058490134B12D164CDD /* Pods_ChatTextView_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatTextView_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -156,7 +156,6 @@
 				E795279691677750350ACF5D /* Pods-ChatTextView_Tests.debug.xcconfig */,
 				CEFD5281E90F490898D89C0B /* Pods-ChatTextView_Tests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -228,6 +227,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
