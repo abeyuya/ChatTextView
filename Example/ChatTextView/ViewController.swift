@@ -91,4 +91,8 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: ChatTextViewDelegate {}
+extension ViewController: ChatTextViewDelegate {
+    func didChange(textTypes: [TextType]) {
+        print(textTypes)
+    }
+}

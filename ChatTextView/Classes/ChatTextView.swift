@@ -7,30 +7,8 @@
 
 import UIKit
 
-public struct TextTypeMension {
-    let displayString: String
-    let escapedString: String
-}
-
-public struct TextTypeEmoji {
-    public let displayImage: UIImage?
-    public let escapedString: String
-    public let size: CGSize
-
-    public init(displayImage: UIImage?, escapedString: String, size: CGSize) {
-        self.displayImage = displayImage
-        self.escapedString = escapedString
-        self.size = size
-    }
-}
-
-public enum TextType {
-    case plain(String)
-//    case mention(TextTypeMension)
-    case emoji(TextTypeEmoji)
-}
-
 public protocol ChatTextViewDelegate: class {
+    func didChange(textTypes: [TextType])
 }
 
 public class ChatTextView: UITextView {
@@ -41,6 +19,7 @@ public class ChatTextView: UITextView {
             return c.firstAttribute == .height
         }
     }
+    var usedEmojis: [TextTypeEmoji] = []
 
     public func setup(delegate: ChatTextViewDelegate) {
         self.delegate = self
@@ -48,26 +27,10 @@ public class ChatTextView: UITextView {
         setEmptyHeight()
     }
 
-    public func set(textTypes: [TextType]) {
-        let text = NSMutableAttributedString()
-
-        textTypes.forEach { textType in
-            switch textType {
-            case .plain(let value):
-                let attr = NSAttributedString(string: value)
-                text.append(attr)
-            case .emoji(let value):
-                let attarchment = NSTextAttachment()
-                attarchment.image = value.displayImage
-                let attr = NSAttributedString(attachment: attarchment)
-                text.append(attr)
-            }
-        }
-
-        self.attributedText = text
-    }
-
     public func insert(emoji: TextTypeEmoji) {
+        usedEmojis.append(emoji)
+        usedEmojis = Array(Set(usedEmojis))
+
         let attarchment = NSTextAttachment()
         attarchment.image = emoji.displayImage
         attarchment.bounds = .init(origin: .zero, size: emoji.size)
@@ -162,5 +125,11 @@ extension ChatTextView: UITextViewDelegate {
     public func textViewDidChange(_ textView: UITextView) {
         let newFrame = calcLimitedFrame(text: textView.text)
         update(frame: newFrame)
+
+        let parsed = Parser.parse(
+            attributedText: textView.attributedText,
+            usedEmojis: usedEmojis
+        )
+        self.chatTextViewDelegate?.didChange(textTypes: parsed)
     }
 }
