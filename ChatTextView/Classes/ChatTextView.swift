@@ -7,6 +7,29 @@
 
 import UIKit
 
+public struct TextTypeMension {
+    let displayString: String
+    let escapedString: String
+}
+
+public struct TextTypeEmoji {
+    public let displayImage: UIImage?
+    public let escapedString: String
+    public let size: CGSize
+
+    public init(displayImage: UIImage?, escapedString: String, size: CGSize) {
+        self.displayImage = displayImage
+        self.escapedString = escapedString
+        self.size = size
+    }
+}
+
+public enum TextType {
+    case plain(String)
+//    case mention(TextTypeMension)
+    case emoji(TextTypeEmoji)
+}
+
 public protocol ChatTextViewDelegate: class {
 }
 
@@ -23,6 +46,36 @@ public class ChatTextView: UITextView {
         self.delegate = self
         self.chatTextViewDelegate = delegate
         setEmptyHeight()
+    }
+
+    public func set(textTypes: [TextType]) {
+        let text = NSMutableAttributedString()
+
+        textTypes.forEach { textType in
+            switch textType {
+            case .plain(let value):
+                let attr = NSAttributedString(string: value)
+                text.append(attr)
+            case .emoji(let value):
+                let attarchment = NSTextAttachment()
+                attarchment.image = value.displayImage
+                let attr = NSAttributedString(attachment: attarchment)
+                text.append(attr)
+            }
+        }
+
+        self.attributedText = text
+    }
+
+    public func insert(emoji: TextTypeEmoji) {
+        let attarchment = NSTextAttachment()
+        attarchment.image = emoji.displayImage
+        attarchment.bounds = .init(origin: .zero, size: emoji.size)
+        let attr = NSAttributedString(attachment: attarchment)
+
+        let origin = NSMutableAttributedString(attributedString: self.attributedText)
+        origin.insert(attr, at: currentCursorPosition())
+        self.attributedText = origin
     }
 }
 
@@ -84,11 +137,23 @@ private extension ChatTextView {
             heightLayoutConstraint?.constant = frame.size.height
         }
     }
+
+    func currentCursorPosition() -> Int {
+        guard let selectedRange = self.selectedTextRange else { return 0 }
+        let cursorPosition = self.offset(
+            from: self.beginningOfDocument,
+            to: selectedRange.start
+        )
+        return cursorPosition
+    }
 }
 
 private extension NSObject {
     func copyObject<T:NSObject>() throws -> T? {
-        let data = try NSKeyedArchiver.archivedData(withRootObject:self, requiringSecureCoding:false)
+        let data = try NSKeyedArchiver.archivedData(
+            withRootObject:self,
+            requiringSecureCoding:false
+        )
         return try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? T
     }
 }

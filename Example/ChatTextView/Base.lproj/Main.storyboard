@@ -38,11 +38,11 @@
                             <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kWB-CK-ATe">
                                 <rect key="frame" x="0.0" y="809" width="414" height="87"/>
                                 <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Lorem ipsum dolor sit er elit lamet" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Ljr-qV-LGK" customClass="ChatTextView" customModule="ChatTextView">
-                                        <rect key="frame" x="8" y="8" width="354" height="30"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Ljr-qV-LGK" customClass="ChatTextView" customModule="ChatTextView">
+                                        <rect key="frame" x="8" y="8" width="278" height="30"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" priority="750" constant="30" id="gr9-RM-u3Q"/>
+                                            <constraint firstAttribute="height" constant="30" id="gr9-RM-u3Q"/>
                                         </constraints>
                                         <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -52,14 +52,26 @@
                                         <rect key="frame" x="370" y="8" width="36" height="30"/>
                                         <state key="normal" title="Send"/>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pZo-8q-8C4">
+                                        <rect key="frame" x="332" y="8" width="30" height="30"/>
+                                        <state key="normal" title="😀"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y8E-pL-w5V">
+                                        <rect key="frame" x="294" y="8" width="30" height="30"/>
+                                        <state key="normal" title="@"/>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="secondarySystemFillColor" red="0.47058823529999999" green="0.47058823529999999" blue="0.50196078430000002" alpha="0.16" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstItem="y8E-pL-w5V" firstAttribute="leading" secondItem="Ljr-qV-LGK" secondAttribute="trailing" constant="8" id="8bK-yu-bgH"/>
                                     <constraint firstItem="Ljr-qV-LGK" firstAttribute="top" secondItem="kWB-CK-ATe" secondAttribute="top" constant="8" id="NHk-OE-wmA"/>
                                     <constraint firstAttribute="trailing" secondItem="goK-H4-f2G" secondAttribute="trailing" constant="8" id="QHV-gE-FI1"/>
-                                    <constraint firstItem="goK-H4-f2G" firstAttribute="leading" secondItem="Ljr-qV-LGK" secondAttribute="trailing" constant="8" id="aKT-0j-PLc"/>
+                                    <constraint firstItem="pZo-8q-8C4" firstAttribute="centerY" secondItem="Ljr-qV-LGK" secondAttribute="centerY" id="Qts-fV-xep"/>
                                     <constraint firstItem="Ljr-qV-LGK" firstAttribute="leading" secondItem="kWB-CK-ATe" secondAttribute="leading" constant="8" id="bBB-qY-iCK"/>
+                                    <constraint firstItem="goK-H4-f2G" firstAttribute="leading" secondItem="pZo-8q-8C4" secondAttribute="trailing" constant="8" id="blU-yK-DvM"/>
                                     <constraint firstItem="goK-H4-f2G" firstAttribute="centerY" secondItem="Ljr-qV-LGK" secondAttribute="centerY" id="cWa-OZ-Ws3"/>
+                                    <constraint firstItem="y8E-pL-w5V" firstAttribute="centerY" secondItem="Ljr-qV-LGK" secondAttribute="centerY" id="fED-DF-8WX"/>
+                                    <constraint firstItem="pZo-8q-8C4" firstAttribute="leading" secondItem="y8E-pL-w5V" secondAttribute="trailing" constant="8" id="frs-6V-Rg0"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UHR-a4-I4g">
@@ -83,6 +95,10 @@
                     <connections>
                         <outlet property="bottomLayoutConstraint" destination="KYB-lg-dsB" id="RNy-Qa-1Q1"/>
                         <outlet property="chatTextView" destination="Ljr-qV-LGK" id="6bM-js-fOg"/>
+                        <outlet property="emojiButton" destination="pZo-8q-8C4" id="32X-al-SyE"/>
+                        <outlet property="mensionButton" destination="y8E-pL-w5V" id="ImA-Ke-ugB"/>
+                        <outlet property="sendButton" destination="goK-H4-f2G" id="2fo-ZX-jzp"/>
+                        <outlet property="tableView" destination="UHR-a4-I4g" id="rQe-6o-9oM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

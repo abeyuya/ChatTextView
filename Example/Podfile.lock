@@ -22,7 +22,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ChatTextView: ef1ecb0b8581d1d0dbadb0de08734728ca77a429
+  ChatTextView: 8afccccf8507bcd33f111479dd0f90b68786fd4b
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   UnderKeyboard: 79ea6feb497af99c1856aaae0ab8ded3c739f745
 
