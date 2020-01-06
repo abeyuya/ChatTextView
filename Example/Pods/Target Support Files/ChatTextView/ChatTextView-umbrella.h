@@ -10,6 +10,7 @@
 #endif
 #endif
 
+#import "ChatTextView-Bridging-Header.h"
 
 FOUNDATION_EXPORT double ChatTextViewVersionNumber;
 FOUNDATION_EXPORT const unsigned char ChatTextViewVersionString[];

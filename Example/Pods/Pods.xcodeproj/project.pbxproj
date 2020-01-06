@@ -6,26 +6,17 @@
 	objectVersion = 46;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		C3B9FB45EF6F86A8624A1FFE660F8513 /* ChatTextView */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 19CC05A6F04A55C13410912E5DB8EB1E /* Build configuration list for PBXAggregateTarget "ChatTextView" */;
-			buildPhases = (
-			);
-			dependencies = (
-			);
-			name = ChatTextView;
-			productName = ChatTextView;
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		00224C929D57F45B70E87359E719948D /* FBSnapshotTestCase.h in Headers */ = {isa = PBXBuildFile; fileRef = F0FF3B2934B0E10D82ABCAE0C1FBC12D /* FBSnapshotTestCase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		11C410135C7E89353B480AC8DE0BFB77 /* UIApplication+StrictKeyWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = F1195CF9789B940D87BE31FF1E87EC1E /* UIApplication+StrictKeyWindow.m */; };
 		14AD81D52FAD9CF2C065C61FB00C3B4F /* UIImage+Diff.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A45A908E09863371E79E832A4788165 /* UIImage+Diff.m */; };
 		14C511527597E5846AB2627F791C7D8E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 716A9972B9D9103B54DB950893FAF104 /* QuartzCore.framework */; };
 		17B05BD2BE3E96144E5F9766A77BD62D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BD4ED544B638D07C7D755AF1C27116A /* Foundation.framework */; };
+		1D621D509369D7E6BC42583CBEA7C8E4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BD4ED544B638D07C7D755AF1C27116A /* Foundation.framework */; };
+		25C4C5509074DD7B709B4B9CC016D497 /* ChatTextView-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ACC5890FAC6A25E146594530BC1277F /* ChatTextView-dummy.m */; };
 		2DCFF0CE0BD295F1D46D3247F36B192C /* UIImage+Compare.m in Sources */ = {isa = PBXBuildFile; fileRef = 265E03A7EDD457A73E095B048A577439 /* UIImage+Compare.m */; };
+		389DC24052EA6B37D9390592898A7C59 /* ChatTextView-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 67D5D7F111D55B75F7DC16CCAA59095B /* ChatTextView-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3B6E5FE82547021C8CD7A2A3A6852A30 /* ChatTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A63EF80984BDA381E928A554A2DA453 /* ChatTextView.swift */; };
 		40039E0AF0D764360B1D4FC4F7950D2E /* UIApplication+StrictKeyWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E0037E953BAB2AB573FC72EC29EB0E2 /* UIApplication+StrictKeyWindow.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		555B0DD51BF018C4D0EB2EF74BD8E93D /* UnderKeyboardLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBE23914348BC265F540F9C9013D627 /* UnderKeyboardLayoutConstraint.swift */; };
 		642EADD0F249C470AE19EA6FA9B42E00 /* Pods-ChatTextView_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F424B366703A08A8B7BD2BD868434B6 /* Pods-ChatTextView_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -50,6 +41,7 @@
 		D04AAC8B22E4A4DC4F39891C4E52F251 /* UIImage+Diff.h in Headers */ = {isa = PBXBuildFile; fileRef = D938642DB88332B8C37DA1EA1E9173B8 /* UIImage+Diff.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		E0B8D095C732352C854D365B9E5B993D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CAA89EEF1039078430D7A886477E365 /* UIKit.framework */; };
 		E8AC509D18EBF21B1FEA909652A01108 /* FBSnapshotTestCasePlatform.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B0FC6148CAD95930F436B3CA41AADD /* FBSnapshotTestCasePlatform.m */; };
+		EA4B2706904A0DC0142D575872174DA9 /* ChatTextView-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = F5F4102C62C71E812BF7EC85F4FA4A94 /* ChatTextView-Bridging-Header.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F1AAAE00BB32B733B238E2B4E8424506 /* UIImage+Compare.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F036AA8766D705AD2656F34BFA9C786 /* UIImage+Compare.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		F720FAF13A108CE6901E0A8B0580E1E8 /* FBSnapshotTestCase-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 35619CFA2FA78C04850D4A8B84512C0B /* FBSnapshotTestCase-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
@@ -88,6 +80,7 @@
 /* Begin PBXFileReference section */
 		05191F8FC1E8ABB8DF5979946C1EC18F /* FBSnapshotTestCase.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBSnapshotTestCase.m; path = FBSnapshotTestCase/FBSnapshotTestCase.m; sourceTree = "<group>"; };
 		07D524E5B7B67559435EAC7AD19202E7 /* Pods-ChatTextView_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-ChatTextView_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		0A63EF80984BDA381E928A554A2DA453 /* ChatTextView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ChatTextView.swift; path = ChatTextView/Classes/ChatTextView.swift; sourceTree = "<group>"; };
 		0C866D1359C8D314670CE62B118B71B4 /* FBSnapshotTestController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBSnapshotTestController.m; path = FBSnapshotTestCase/FBSnapshotTestController.m; sourceTree = "<group>"; };
 		1051936CE02DC0C1EBFA7B641F584A5B /* Pods-ChatTextView_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-ChatTextView_Tests.modulemap"; sourceTree = "<group>"; };
 		1691577C3041DB462370B1CA26AF051E /* FBSnapshotTestCase.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = FBSnapshotTestCase.modulemap; sourceTree = "<group>"; };
@@ -103,52 +96,55 @@
 		35619CFA2FA78C04850D4A8B84512C0B /* FBSnapshotTestCase-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FBSnapshotTestCase-umbrella.h"; sourceTree = "<group>"; };
 		3B14EC4CF5BC2A0F40D3A1FE4BDE18EF /* UnderKeyboard-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UnderKeyboard-dummy.m"; sourceTree = "<group>"; };
 		3F424B366703A08A8B7BD2BD868434B6 /* Pods-ChatTextView_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-ChatTextView_Tests-umbrella.h"; sourceTree = "<group>"; };
+		40A0751A77D7A84589B11E416AFB14BB /* ChatTextView.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = ChatTextView.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		4383592EE0155FFB817DE5BD52A53213 /* UIImage+Snapshot.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Snapshot.m"; path = "FBSnapshotTestCase/Categories/UIImage+Snapshot.m"; sourceTree = "<group>"; };
 		46E47B939166DFE96A54F46238990B8E /* UnderKeyboard.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = UnderKeyboard.xcconfig; sourceTree = "<group>"; };
-		48DF2C837B089CA21CF23A642B735957 /* ChatTextView.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ChatTextView.xcconfig; sourceTree = "<group>"; };
-		4DB2F80023C2F08A0090F4F8 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
-		4DB2F80223C2F08A0090F4F8 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
-		4DB2F80323C2F3350090F4F8 /* ChatTextView-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ChatTextView-Bridging-Header.h"; sourceTree = "<group>"; };
-		4DB2F80423C2F3350090F4F8 /* ChatTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextView.swift; sourceTree = "<group>"; };
 		4E6C208AFA53D785F2A6F88FC0C02A55 /* Pods-ChatTextView_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ChatTextView_Example-frameworks.sh"; sourceTree = "<group>"; };
 		511F8E8DCC8AD4861A93D92985553A96 /* Pods-ChatTextView_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ChatTextView_Tests-frameworks.sh"; sourceTree = "<group>"; };
-		53C1EFD46872F872B86F6722F58C9508 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		5726B45D645A35C2C0547A94E7BAC32E /* FBSnapshotTestCase-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FBSnapshotTestCase-dummy.m"; sourceTree = "<group>"; };
 		587491C10325CC64B0CC0D195884DB67 /* Pods-ChatTextView_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-ChatTextView_Example-dummy.m"; sourceTree = "<group>"; };
+		5B046D9450987066F0652977139B1F40 /* ChatTextView-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ChatTextView-prefix.pch"; sourceTree = "<group>"; };
 		5C4F31330DFA99D699E4BDC8C3573D73 /* FBSnapshotTestCase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FBSnapshotTestCase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DDFBB461FE81CA1BE42188C598D6823 /* FBSnapshotTestCase-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "FBSnapshotTestCase-Info.plist"; sourceTree = "<group>"; };
 		5E601BD54DA9BF4071437E60125281FA /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		67D5D7F111D55B75F7DC16CCAA59095B /* ChatTextView-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ChatTextView-umbrella.h"; sourceTree = "<group>"; };
 		6827135CFAA839A97C052A0C4913CF95 /* UnderKeyboardObserver.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UnderKeyboardObserver.swift; path = UnderKeyboard/UnderKeyboardObserver.swift; sourceTree = "<group>"; };
 		6CBE23914348BC265F540F9C9013D627 /* UnderKeyboardLayoutConstraint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UnderKeyboardLayoutConstraint.swift; path = UnderKeyboard/UnderKeyboardLayoutConstraint.swift; sourceTree = "<group>"; };
-		6DFD06AAE1E79C11E6391D5BC7C131C9 /* ChatTextView.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = ChatTextView.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		70A6B3F9EBDD713A17285BEDD06EB5C6 /* FBSnapshotTestController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSnapshotTestController.h; path = FBSnapshotTestCase/FBSnapshotTestController.h; sourceTree = "<group>"; };
 		716A9972B9D9103B54DB950893FAF104 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		7BD4ED544B638D07C7D755AF1C27116A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		7E0037E953BAB2AB573FC72EC29EB0E2 /* UIApplication+StrictKeyWindow.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIApplication+StrictKeyWindow.h"; path = "FBSnapshotTestCase/Categories/UIApplication+StrictKeyWindow.h"; sourceTree = "<group>"; };
+		89EF8C470C6C84390797D13E667A4A86 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		8CAA89EEF1039078430D7A886477E365 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		8F036AA8766D705AD2656F34BFA9C786 /* UIImage+Compare.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImage+Compare.h"; path = "FBSnapshotTestCase/Categories/UIImage+Compare.h"; sourceTree = "<group>"; };
 		92690E4C7AE66A2960335DC7918DF078 /* Pods-ChatTextView_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-ChatTextView_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		9A45A908E09863371E79E832A4788165 /* UIImage+Diff.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Diff.m"; path = "FBSnapshotTestCase/Categories/UIImage+Diff.m"; sourceTree = "<group>"; };
+		9ACC5890FAC6A25E146594530BC1277F /* ChatTextView-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ChatTextView-dummy.m"; sourceTree = "<group>"; };
 		9B0B246F0FCB65C251042F5B70B369ED /* FBSnapshotTestCasePlatform.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSnapshotTestCasePlatform.h; path = FBSnapshotTestCase/FBSnapshotTestCasePlatform.h; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9D97F420721329AED9997056D0F3444F /* Pods-ChatTextView_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ChatTextView_Example.release.xcconfig"; sourceTree = "<group>"; };
 		B1F36F69049FA6495E94A24F796AF6C1 /* Pods-ChatTextView_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-ChatTextView_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 		B331CD9947231608D6A3DC041E37F584 /* UIImage+Snapshot.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImage+Snapshot.h"; path = "FBSnapshotTestCase/Categories/UIImage+Snapshot.h"; sourceTree = "<group>"; };
+		B48CB632E88F32808F41A60050133A25 /* ChatTextView-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ChatTextView-Info.plist"; sourceTree = "<group>"; };
 		B597D6C0272CEAB3EA4B25AE7B16A698 /* FBSnapshotTestCase.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FBSnapshotTestCase.xcconfig; sourceTree = "<group>"; };
 		B9C48355BF87F7F8ECECA1BB746E9C75 /* Pods-ChatTextView_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-ChatTextView_Example.modulemap"; sourceTree = "<group>"; };
 		C15A4429015C1D4D8CE157889016411B /* Pods-ChatTextView_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-ChatTextView_Example-Info.plist"; sourceTree = "<group>"; };
+		C2205BF708BF1F1BF16106DF569F9D89 /* ChatTextView.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = ChatTextView.modulemap; sourceTree = "<group>"; };
 		C5E8FA5A55C08DB5F3ECF7A3E8C68E40 /* Pods-ChatTextView_Tests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-ChatTextView_Tests-Info.plist"; sourceTree = "<group>"; };
 		C9CD153B083958BE1AA785579065A83D /* Pods-ChatTextView_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ChatTextView_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		CA8A09881AD0C2AE092143BD8C1CD6FF /* UnderKeyboard.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = UnderKeyboard.modulemap; sourceTree = "<group>"; };
+		CB7C8DB14D159857E0F842B7EF540DA4 /* ChatTextView.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ChatTextView.xcconfig; sourceTree = "<group>"; };
 		CC8F17E237AF512B29981D34C457FDBD /* Pods-ChatTextView_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ChatTextView_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		D814DBA138CE8BCE348675A9A99C31CB /* UnderKeyboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UnderKeyboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D938642DB88332B8C37DA1EA1E9173B8 /* UIImage+Diff.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImage+Diff.h"; path = "FBSnapshotTestCase/Categories/UIImage+Diff.h"; sourceTree = "<group>"; };
 		DE1715FF653E98122976EA52C1D56362 /* Pods_ChatTextView_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatTextView_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0B0FC6148CAD95930F436B3CA41AADD /* FBSnapshotTestCasePlatform.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBSnapshotTestCasePlatform.m; path = FBSnapshotTestCase/FBSnapshotTestCasePlatform.m; sourceTree = "<group>"; };
-		E0C9FB8C534C81ACEA24759802980B85 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		EAD3B7D2E50A9B64186FF1E45147DEA4 /* ChatTextView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ChatTextView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED53269C9F960635426DBC93FF2F4AA7 /* Pods-ChatTextView_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-ChatTextView_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		F0FF3B2934B0E10D82ABCAE0C1FBC12D /* FBSnapshotTestCase.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSnapshotTestCase.h; path = FBSnapshotTestCase/FBSnapshotTestCase.h; sourceTree = "<group>"; };
 		F1195CF9789B940D87BE31FF1E87EC1E /* UIApplication+StrictKeyWindow.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIApplication+StrictKeyWindow.m"; path = "FBSnapshotTestCase/Categories/UIApplication+StrictKeyWindow.m"; sourceTree = "<group>"; };
+		F420245C07E8D5B1806F5989412DA5E1 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		F5F4102C62C71E812BF7EC85F4FA4A94 /* ChatTextView-Bridging-Header.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "ChatTextView-Bridging-Header.h"; path = "ChatTextView/Classes/ChatTextView-Bridging-Header.h"; sourceTree = "<group>"; };
 		F6BC5FF9C3A6393BAF707E2BEBD5E310 /* FBSnapshotTestCase-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FBSnapshotTestCase-prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -158,6 +154,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				9341DDFCD20C342E9B80721E317F5526 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5C9F2EE227C547C8FFF1D3A8283E5B89 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D621D509369D7E6BC42583CBEA7C8E4 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,26 +195,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		01ECDA8F015E3DB51D6C576C4E707452 /* ChatTextView */ = {
+		17A393A2A7929743F9A2BC463CFD16F4 /* ChatTextView */ = {
 			isa = PBXGroup;
 			children = (
-				041C73EDC51D7F692073C69F94C30353 /* Pod */,
-				DF8DEA0B5912685054BB020F01FA2C21 /* Support Files */,
+				0A63EF80984BDA381E928A554A2DA453 /* ChatTextView.swift */,
+				F5F4102C62C71E812BF7EC85F4FA4A94 /* ChatTextView-Bridging-Header.h */,
+				91C321CAF3F1342BBFB908002D113A4F /* Pod */,
+				99711B5548359B4046249E85F4369726 /* Support Files */,
 			);
 			name = ChatTextView;
 			path = ../..;
-			sourceTree = "<group>";
-		};
-		041C73EDC51D7F692073C69F94C30353 /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				4DB2F80123C2F08A0090F4F8 /* Assets */,
-				4DB2F7FF23C2F0890090F4F8 /* Classes */,
-				6DFD06AAE1E79C11E6391D5BC7C131C9 /* ChatTextView.podspec */,
-				53C1EFD46872F872B86F6722F58C9508 /* LICENSE */,
-				E0C9FB8C534C81ACEA24759802980B85 /* README.md */,
-			);
-			name = Pod;
 			sourceTree = "<group>";
 		};
 		2100A5474C1C271DF4DAEAA16E6D221C /* Support Files */ = {
@@ -225,17 +219,6 @@
 			);
 			name = "Support Files";
 			path = "../Target Support Files/UnderKeyboard";
-			sourceTree = "<group>";
-		};
-		23D441C0DD5465EED3C416DBB1D729E0 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				5C4F31330DFA99D699E4BDC8C3573D73 /* FBSnapshotTestCase.framework */,
-				1923240FB31B8F60EE19856EE3FF7074 /* Pods_ChatTextView_Example.framework */,
-				DE1715FF653E98122976EA52C1D56362 /* Pods_ChatTextView_Tests.framework */,
-				D814DBA138CE8BCE348675A9A99C31CB /* UnderKeyboard.framework */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		346183D7183B2C00DE847D7951114452 /* Pods-ChatTextView_Example */ = {
@@ -255,24 +238,16 @@
 			path = "Target Support Files/Pods-ChatTextView_Example";
 			sourceTree = "<group>";
 		};
-		4DB2F7FF23C2F0890090F4F8 /* Classes */ = {
+		355479256D6C028E2F5A6F3A7DEA629E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4DB2F80023C2F08A0090F4F8 /* .gitkeep */,
-				4DB2F80423C2F3350090F4F8 /* ChatTextView.swift */,
-				4DB2F80323C2F3350090F4F8 /* ChatTextView-Bridging-Header.h */,
+				EAD3B7D2E50A9B64186FF1E45147DEA4 /* ChatTextView.framework */,
+				5C4F31330DFA99D699E4BDC8C3573D73 /* FBSnapshotTestCase.framework */,
+				1923240FB31B8F60EE19856EE3FF7074 /* Pods_ChatTextView_Example.framework */,
+				DE1715FF653E98122976EA52C1D56362 /* Pods_ChatTextView_Tests.framework */,
+				D814DBA138CE8BCE348675A9A99C31CB /* UnderKeyboard.framework */,
 			);
-			name = Classes;
-			path = ChatTextView/Classes;
-			sourceTree = "<group>";
-		};
-		4DB2F80123C2F08A0090F4F8 /* Assets */ = {
-			isa = PBXGroup;
-			children = (
-				4DB2F80223C2F08A0090F4F8 /* .gitkeep */,
-			);
-			name = Assets;
-			path = ChatTextView/Assets;
+			name = Products;
 			sourceTree = "<group>";
 		};
 		502AF999EFDB6A918AA79AFC62E25B0F /* FBSnapshotTestCase */ = {
@@ -321,6 +296,30 @@
 			path = "Target Support Files/Pods-ChatTextView_Tests";
 			sourceTree = "<group>";
 		};
+		91C321CAF3F1342BBFB908002D113A4F /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				40A0751A77D7A84589B11E416AFB14BB /* ChatTextView.podspec */,
+				F420245C07E8D5B1806F5989412DA5E1 /* LICENSE */,
+				89EF8C470C6C84390797D13E667A4A86 /* README.md */,
+			);
+			name = Pod;
+			sourceTree = "<group>";
+		};
+		99711B5548359B4046249E85F4369726 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				C2205BF708BF1F1BF16106DF569F9D89 /* ChatTextView.modulemap */,
+				CB7C8DB14D159857E0F842B7EF540DA4 /* ChatTextView.xcconfig */,
+				9ACC5890FAC6A25E146594530BC1277F /* ChatTextView-dummy.m */,
+				B48CB632E88F32808F41A60050133A25 /* ChatTextView-Info.plist */,
+				5B046D9450987066F0652977139B1F40 /* ChatTextView-prefix.pch */,
+				67D5D7F111D55B75F7DC16CCAA59095B /* ChatTextView-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "Example/Pods/Target Support Files/ChatTextView";
+			sourceTree = "<group>";
+		};
 		BA4F31F07263C99FC76E66D632A59F09 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -329,10 +328,10 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C8C66C7A8D00279C684AD95B361C0091 /* Development Pods */ = {
+		BEEA2FF88D03229FA62017AF8533E1B4 /* Development Pods */ = {
 			isa = PBXGroup;
 			children = (
-				01ECDA8F015E3DB51D6C576C4E707452 /* ChatTextView */,
+				17A393A2A7929743F9A2BC463CFD16F4 /* ChatTextView */,
 			);
 			name = "Development Pods";
 			sourceTree = "<group>";
@@ -341,10 +340,10 @@
 			isa = PBXGroup;
 			children = (
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
-				C8C66C7A8D00279C684AD95B361C0091 /* Development Pods */,
+				BEEA2FF88D03229FA62017AF8533E1B4 /* Development Pods */,
 				BA4F31F07263C99FC76E66D632A59F09 /* Frameworks */,
 				EC08E8DEF4CCDA8B4CA25C3A604182D7 /* Pods */,
-				23D441C0DD5465EED3C416DBB1D729E0 /* Products */,
+				355479256D6C028E2F5A6F3A7DEA629E /* Products */,
 				D4139E7DE1D33625B160C9C857FE6751 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
@@ -356,15 +355,6 @@
 				8508F0F907959137AF5D910BEA2AAED4 /* Pods-ChatTextView_Tests */,
 			);
 			name = "Targets Support Files";
-			sourceTree = "<group>";
-		};
-		DF8DEA0B5912685054BB020F01FA2C21 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				48DF2C837B089CA21CF23A642B735957 /* ChatTextView.xcconfig */,
-			);
-			name = "Support Files";
-			path = "Example/Pods/Target Support Files/ChatTextView";
 			sourceTree = "<group>";
 		};
 		E4EBDDA3BDF9A29A6E8BA76D4F6C9DB1 /* UnderKeyboard */ = {
@@ -455,6 +445,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		84561D1D6AAF68902060E3D50A970336 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA4B2706904A0DC0142D575872174DA9 /* ChatTextView-Bridging-Header.h in Headers */,
+				389DC24052EA6B37D9390592898A7C59 /* ChatTextView-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8E8BEC42935B555C6A9E1E630F4F0F2A /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -500,6 +499,24 @@
 			name = UnderKeyboard;
 			productName = UnderKeyboard;
 			productReference = D814DBA138CE8BCE348675A9A99C31CB /* UnderKeyboard.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		C3B9FB45EF6F86A8624A1FFE660F8513 /* ChatTextView */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4A5C6906117842B3736B7CC1AF10D6DB /* Build configuration list for PBXNativeTarget "ChatTextView" */;
+			buildPhases = (
+				84561D1D6AAF68902060E3D50A970336 /* Headers */,
+				F430575694D1CCA218E79468F79D2702 /* Sources */,
+				5C9F2EE227C547C8FFF1D3A8283E5B89 /* Frameworks */,
+				7062BD097DEE239A91A0A6999BA1E2FC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ChatTextView;
+			productName = ChatTextView;
+			productReference = EAD3B7D2E50A9B64186FF1E45147DEA4 /* ChatTextView.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		C9F57982B66877B7761295C5C8A19FEA /* Pods-ChatTextView_Example */ = {
@@ -550,11 +567,6 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1100;
 				LastUpgradeCheck = 1100;
-				TargetAttributes = {
-					C3B9FB45EF6F86A8624A1FFE660F8513 = {
-						LastSwiftMigration = 1120;
-					};
-				};
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -565,7 +577,7 @@
 				Base,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
-			productRefGroup = 23D441C0DD5465EED3C416DBB1D729E0 /* Products */;
+			productRefGroup = 355479256D6C028E2F5A6F3A7DEA629E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -587,6 +599,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		5CC655F1A6C7A45A9693160581076BAE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7062BD097DEE239A91A0A6999BA1E2FC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -649,6 +668,15 @@
 				2DCFF0CE0BD295F1D46D3247F36B192C /* UIImage+Compare.m in Sources */,
 				14AD81D52FAD9CF2C065C61FB00C3B4F /* UIImage+Diff.m in Sources */,
 				A525E29E0A8079B35B793D8A2B5FBDF2 /* UIImage+Snapshot.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F430575694D1CCA218E79468F79D2702 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				25C4C5509074DD7B709B4B9CC016D497 /* ChatTextView-dummy.m in Sources */,
+				3B6E5FE82547021C8CD7A2A3A6852A30 /* ChatTextView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -783,6 +811,37 @@
 			};
 			name = Debug;
 		};
+		57553BBEBA7165942F2B5321D803B578 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CB7C8DB14D159857E0F842B7EF540DA4 /* ChatTextView.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/ChatTextView/ChatTextView-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/ChatTextView/ChatTextView-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/ChatTextView/ChatTextView.modulemap";
+				PRODUCT_MODULE_NAME = ChatTextView;
+				PRODUCT_NAME = ChatTextView;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
 		5B7B8C5C988D7BE3BADD3368CF290086 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 46E47B939166DFE96A54F46238990B8E /* UnderKeyboard.xcconfig */;
@@ -846,20 +905,35 @@
 			};
 			name = Release;
 		};
-		78308334EAFA9808497301AD68EBDB1C /* Release */ = {
+		6E66AF750C98A0BD641951F460979760 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 48DF2C837B089CA21CF23A642B735957 /* ChatTextView.xcconfig */;
+			baseConfigurationReference = CB7C8DB14D159857E0F842B7EF540DA4 /* ChatTextView.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/ChatTextView/ChatTextView-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/ChatTextView/ChatTextView-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/ChatTextView/ChatTextView.modulemap";
+				PRODUCT_MODULE_NAME = ChatTextView;
+				PRODUCT_NAME = ChatTextView;
 				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = "../../ChatTextView/Classes/ChatTextView-Bridging-Header.h";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -893,23 +967,6 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		9647794978DF3763A7F37D4F27C3AC21 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 48DF2C837B089CA21CF23A642B735957 /* ChatTextView.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = "../../ChatTextView/Classes/ChatTextView-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -1111,20 +1168,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		19CC05A6F04A55C13410912E5DB8EB1E /* Build configuration list for PBXAggregateTarget "ChatTextView" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9647794978DF3763A7F37D4F27C3AC21 /* Debug */,
-				78308334EAFA9808497301AD68EBDB1C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B8BCBD0110C2658BB5DAADB9B7D97B92 /* Debug */,
 				B0087CB4594321EF41619F3181FE120E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4A5C6906117842B3736B7CC1AF10D6DB /* Build configuration list for PBXNativeTarget "ChatTextView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				57553BBEBA7165942F2B5321D803B578 /* Debug */,
+				6E66AF750C98A0BD641951F460979760 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
