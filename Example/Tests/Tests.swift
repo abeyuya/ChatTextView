@@ -1,5 +1,5 @@
 import XCTest
-import ChatTextView
+//import ChatTextView
 
 class Tests: XCTestCase {
     

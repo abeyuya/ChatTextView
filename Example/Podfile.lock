@@ -5,14 +5,17 @@ PODS:
   - FBSnapshotTestCase/Core (2.1.4)
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
+  - UnderKeyboard (13.0.2)
 
 DEPENDENCIES:
   - ChatTextView (from `../`)
   - FBSnapshotTestCase (~> 2.1.4)
+  - UnderKeyboard
 
 SPEC REPOS:
   trunk:
     - FBSnapshotTestCase
+    - UnderKeyboard
 
 EXTERNAL SOURCES:
   ChatTextView:
@@ -21,7 +24,8 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   ChatTextView: ef1ecb0b8581d1d0dbadb0de08734728ca77a429
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
+  UnderKeyboard: 79ea6feb497af99c1856aaae0ab8ded3c739f745
 
-PODFILE CHECKSUM: aebc2738c0d51c95ba35f344ad731f91ff0a2f79
+PODFILE CHECKSUM: 4668170801a1f78b7dba35be9421263e88d39d96
 
 COCOAPODS: 1.8.4
