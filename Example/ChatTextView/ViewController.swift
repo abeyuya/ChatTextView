@@ -32,12 +32,15 @@ class ViewController: UIViewController {
     }
 
     private let underKeyboardLayoutConstraint = UnderKeyboardLayoutConstraint()
+    private var sendTextTypes: [[TextType]] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         underKeyboardLayoutConstraint.setup(bottomLayoutConstraint, view: view)
 
         chatTextView.setup(delegate: self)
+        tableView.delegate = self
+        tableView.dataSource = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -47,7 +50,12 @@ class ViewController: UIViewController {
 
     @objc
     func didTapSendButton() {
+        let textTypes = chatTextView.getCurrentTextTypes()
+        sendTextTypes.append(textTypes)
+        tableView.reloadData()
 
+        chatTextView.clear()
+        chatTextView.resignFirstResponder()
     }
 
     @objc
@@ -88,6 +96,48 @@ class ViewController: UIViewController {
     @objc
     func didTapMensionButton() {
 
+    }
+}
+
+extension ViewController: UITableViewDelegate {}
+
+extension ViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return sendTextTypes.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let textTypes = sendTextTypes[indexPath.row]
+
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") else {
+            return UITableViewCell()
+        }
+
+        guard let label = cell.viewWithTag(10) as? UILabel else {
+            return UITableViewCell()
+        }
+
+        label.attributedText = toAttributedString(textTypes: textTypes)
+        return cell
+    }
+
+    func toAttributedString(textTypes: [TextType]) -> NSAttributedString {
+        let result = NSMutableAttributedString()
+
+        for t in textTypes {
+            switch t {
+            case .plain(let string):
+                result.append(NSAttributedString(string: string))
+            case .emoji(let value):
+                let attarchment = NSTextAttachment()
+                attarchment.image = value.displayImage
+                attarchment.bounds = .init(origin: .zero, size: .init(width: 17, height: 17))
+                let attr = NSAttributedString(attachment: attarchment)
+                result.append(attr)
+            }
+        }
+
+        return result
     }
 }
 

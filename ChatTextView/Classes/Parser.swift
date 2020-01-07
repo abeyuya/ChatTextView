@@ -43,17 +43,52 @@ enum Parser {
 
             if let emoji = str[.attachment] as? NSTextAttachment,
                 let usedEmoji = usedEmojis.first(where: { $0.displayImage == emoji.image }) {
-                let r = TextTypeEmoji(
-                    displayImage: nil,
-                    escapedString: usedEmoji.escapedString,
-                    size: .zero
-                )
-                result.append(TextType.emoji(r))
+                result.append(TextType.emoji(usedEmoji))
                 continue
             }
 
             let r = attributedText.attributedSubstring(from: NSRange(location: i, length: 1))
             result.append(TextType.plain(r.string))
+        }
+
+        return bundle(parsedResult: result)
+    }
+
+    private static func bundle(parsedResult: [TextType]) -> [TextType] {
+        var result: [TextType] = []
+        var prev: TextType?
+        var bundlingPlain: String?
+
+        for t in parsedResult {
+            defer {
+                prev = t
+            }
+
+            switch t {
+            case .emoji:
+                if let b = bundlingPlain {
+                    result.append(TextType.plain(b))
+                    bundlingPlain = nil
+                }
+                result.append(t)
+                continue
+            case .plain(let string):
+                guard let p = prev else {
+                    bundlingPlain = string
+                    continue
+                }
+                switch p {
+                case .plain:
+                    bundlingPlain?.append(string)
+                case .emoji:
+                    bundlingPlain = string
+                }
+            }
+        }
+
+        if let b = bundlingPlain {
+            result.append(TextType.plain(b))
+            bundlingPlain = nil
         }
 
         return result

@@ -40,6 +40,20 @@ public class ChatTextView: UITextView {
         origin.insert(attr, at: currentCursorPosition())
         self.attributedText = origin
     }
+
+    public func getCurrentTextTypes() -> [TextType] {
+        let parsed = Parser.parse(
+            attributedText: self.attributedText,
+            usedEmojis: usedEmojis
+        )
+        return parsed
+    }
+
+    public func clear() {
+        self.text = ""
+        self.attributedText = NSAttributedString()
+        setEmptyHeight()
+    }
 }
 
 private extension ChatTextView {
