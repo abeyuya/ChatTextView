@@ -63,10 +63,9 @@ class ViewController: UIViewController {
         let vc = UIAlertController(title: "", message: "emoji", preferredStyle: .actionSheet)
 
         let parrot = UIAlertAction(title: "parrot (gif)", style: .default) { _ in
-            let url = "https://emoji.slack-edge.com/T02DMDKPY/parrot/2c74b5af5aa44406.gif"
-            let image = UIImage.gifImageWithURL(url)
+            let url = URL(string: "https://emoji.slack-edge.com/T02DMDKPY/parrot/2c74b5af5aa44406.gif")!
             let emoji = TextTypeCustomEmoji(
-                displayImage: image,
+                displayImageUrl: url,
                 escapedString: ":parrot:",
                 size: .init(width: 14, height: 14)
             )
@@ -75,10 +74,8 @@ class ViewController: UIViewController {
 
         let octcat = UIAlertAction(title: "octcat (png)", style: .default) { _ in
             let url = URL(string: "https://emoji.slack-edge.com/T02DMDKPY/octocat/627964d7c9.png")!
-            let data = try? Data(contentsOf: url)
-            let image = data == nil ? nil : UIImage(data: data!)
             let emoji = TextTypeCustomEmoji(
-                displayImage: image,
+                displayImageUrl: url,
                 escapedString: ":octcat:",
                 size: .init(width: 14, height: 14)
             )
@@ -130,7 +127,14 @@ extension ViewController: UITableViewDataSource {
                 result.append(NSAttributedString(string: string))
             case .customEmoji(let value):
                 let attarchment = NSTextAttachment()
-                attarchment.image = value.displayImage
+                let image: UIImage? = {
+                    if (value.displayImageUrl.pathExtension == "gif") {
+                        return UIImage.gifImageWithURL(value.displayImageUrl.absoluteString)
+                    }
+                    guard let data = try? Data(contentsOf: value.displayImageUrl) else { return nil }
+                    return UIImage(data: data)
+                }()
+                attarchment.image = image
                 attarchment.bounds = .init(origin: .zero, size: .init(width: 17, height: 17))
                 let attr = NSAttributedString(attachment: attarchment)
                 result.append(attr)

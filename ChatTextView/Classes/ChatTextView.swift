@@ -32,9 +32,21 @@ public class ChatTextView: UITextView {
         usedEmojis = Array(Set(usedEmojis))
 
         let attarchment = NSTextAttachment()
-        attarchment.image = emoji.displayImage
+        let image: UIImage? = {
+            if emoji.displayImageUrl.pathExtension == "gif" {
+                return UIImage.gifImageWithURL(emoji.displayImageUrl.absoluteString)
+            }
+            guard let data = try? Data(contentsOf: emoji.displayImageUrl) else { return nil }
+            return UIImage(data: data)
+        }()
+        attarchment.image = image
         attarchment.bounds = .init(origin: .zero, size: emoji.size)
-        let attr = NSAttributedString(attachment: attarchment)
+        let attr = NSMutableAttributedString(attachment: attarchment)
+        attr.addAttribute(
+            customEmojiAttrKey,
+            value: emoji.displayImageUrl.absoluteString,
+            range: NSRange(location: 0, length: attr.length)
+        )
 
         let origin = NSMutableAttributedString(attributedString: self.attributedText)
         origin.insert(attr, at: currentCursorPosition())

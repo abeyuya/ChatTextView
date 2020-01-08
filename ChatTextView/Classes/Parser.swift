@@ -13,12 +13,12 @@ public struct TextTypeMension {
 }
 
 public struct TextTypeCustomEmoji: Hashable {
-    public let displayImage: UIImage?
+    public let displayImageUrl: URL
     public let escapedString: String
     public let size: CGSize
 
-    public init(displayImage: UIImage?, escapedString: String, size: CGSize) {
-        self.displayImage = displayImage
+    public init(displayImageUrl: URL, escapedString: String, size: CGSize) {
+        self.displayImageUrl = displayImageUrl
         self.escapedString = escapedString
         self.size = size
     }
@@ -34,8 +34,8 @@ public enum TextType {
     case customEmoji(TextTypeCustomEmoji)
 }
 
-private let customAttrKey = NSAttributedString.Key(rawValue: "ChatTextView")
 private let customEmojiUtf16Value = 65532
+internal let customEmojiAttrKey = NSAttributedString.Key(rawValue: "customEmojiImageUrl")
 
 enum Parser {
     static func parse(attributedText: NSAttributedString, usedEmojis: [TextTypeCustomEmoji]) -> [TextType] {
@@ -62,8 +62,8 @@ enum Parser {
 
                 let attr = attributedText.attributes(at: startIndex, effectiveRange: nil)
 
-                if let emoji = attr[.attachment] as? NSTextAttachment,
-                    let usedEmoji = usedEmojis.first(where: { $0.displayImage == emoji.image }) {
+                if let emojiImageUrl = attr[customEmojiAttrKey] as? String,
+                    let usedEmoji = usedEmojis.first(where: { $0.displayImageUrl.absoluteString == emojiImageUrl }) {
                     result.append(TextType.customEmoji(usedEmoji))
                 }
                 continue
