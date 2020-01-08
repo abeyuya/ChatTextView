@@ -12,6 +12,11 @@ public protocol ChatTextViewDelegate: class {
 }
 
 public class ChatTextView: UITextView {
+    struct RenderingGifImageView {
+        let id: String
+        let imageView: UIImageView
+    }
+
     var maxHeight: CGFloat?
     var chatTextViewDelegate: ChatTextViewDelegate?
     var heightLayoutConstraint: NSLayoutConstraint? {
@@ -20,7 +25,7 @@ public class ChatTextView: UITextView {
         }
     }
     var usedEmojis: [TextTypeCustomEmoji] = []
-    var renderingGifImageViews: [UIImageView] = []
+    var renderingGifImageViews: [RenderingGifImageView] = []
 
     public func setup(delegate: ChatTextViewDelegate) {
         self.delegate = self
@@ -41,9 +46,12 @@ public class ChatTextView: UITextView {
             }
             attarchment.bounds = .init(origin: .zero, size: emoji.size)
             let attr = NSMutableAttributedString(attachment: attarchment)
-            attr.addAttribute(
-                customEmojiAttrKey,
-                value: emoji.displayImageUrl.absoluteString,
+            let id = UUID().uuidString
+            attr.addAttributes(
+                [
+                    customEmojiImageUrlAttrKey: emoji.displayImageUrl.absoluteString,
+                    customEmojiIdAttrKey: id
+                ],
                 range: NSRange(location: 0, length: attr.length)
             )
 
@@ -67,6 +75,7 @@ public class ChatTextView: UITextView {
         self.attributedText = NSAttributedString()
         textViewDidChange(self)
         setEmptyHeight()
+        renderingGifImageViews = []
     }
 }
 
@@ -163,18 +172,20 @@ private extension ChatTextView {
     }
 
     func updateAnimatedGif() {
-        subviews.forEach { v in
-            if v is UIImageView {
-                v.removeFromSuperview()
-            }
-        }
         let lastCursorPosition = currentCursorPosition()
         let fullRange = NSRange(location: 0, length: attributedText.length)
 
-        attributedText.enumerateAttribute(customEmojiAttrKey, in: fullRange, options: []) { urlString, range, _ in
+        attributedText.enumerateAttribute(
+            customEmojiImageUrlAttrKey,
+            in: fullRange,
+            options: []
+        ) { urlString, range, _ in
             guard let u = urlString as? String, let url = URL(string: u) else { return }
             guard url.pathExtension == "gif" else { return }
             guard let usingEmoji = usedEmojis.first(where: { $0.displayImageUrl.absoluteString == u }) else { return }
+
+            let attr = attributedText.attributedSubstring(from: range)
+            guard let id = attr.attribute(customEmojiIdAttrKey, at: 0, effectiveRange: nil) as? String else { return }
 
             selectedRange = range
             defer {
@@ -186,10 +197,16 @@ private extension ChatTextView {
             rect.origin.y += (rect.size.height - usingEmoji.size.height)
             rect.size = usingEmoji.size
 
+            if let v = renderingGifImageViews.first(where: { $0.id == id }) {
+                v.imageView.frame = rect
+                return
+            }
+
             createAnimatedImage(imageUrl: url) { image in
                 let iv = UIImageView(frame: rect)
                 iv.image = image
                 self.addSubview(iv)
+                self.renderingGifImageViews.append(RenderingGifImageView(id: id, imageView: iv))
             }
         }
     }

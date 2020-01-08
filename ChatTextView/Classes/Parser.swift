@@ -35,7 +35,8 @@ public enum TextType {
 }
 
 private let customEmojiUtf16Value = 65532
-internal let customEmojiAttrKey = NSAttributedString.Key(rawValue: "customEmojiImageUrl")
+internal let customEmojiImageUrlAttrKey = NSAttributedString.Key(rawValue: "customEmojiImageUrl")
+internal let customEmojiIdAttrKey = NSAttributedString.Key(rawValue: "customEmojiIdImageUrl")
 
 enum Parser {
     static func parse(attributedText: NSAttributedString, usedEmojis: [TextTypeCustomEmoji]) -> [TextType] {
@@ -62,7 +63,7 @@ enum Parser {
 
                 let attr = attributedText.attributes(at: startIndex, effectiveRange: nil)
 
-                if let emojiImageUrl = attr[customEmojiAttrKey] as? String,
+                if let emojiImageUrl = attr[customEmojiImageUrlAttrKey] as? String,
                     let usedEmoji = usedEmojis.first(where: { $0.displayImageUrl.absoluteString == emojiImageUrl }) {
                     result.append(TextType.customEmoji(usedEmoji))
                 }
