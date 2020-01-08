@@ -65,7 +65,7 @@ class ViewController: UIViewController {
         let parrot = UIAlertAction(title: "parrot (gif)", style: .default) { _ in
             let url = "https://emoji.slack-edge.com/T02DMDKPY/parrot/2c74b5af5aa44406.gif"
             let image = UIImage.gifImageWithURL(url)
-            let emoji = TextTypeEmoji(
+            let emoji = TextTypeCustomEmoji(
                 displayImage: image,
                 escapedString: ":parrot:",
                 size: .init(width: 14, height: 14)
@@ -77,7 +77,7 @@ class ViewController: UIViewController {
             let url = URL(string: "https://emoji.slack-edge.com/T02DMDKPY/octocat/627964d7c9.png")!
             let data = try? Data(contentsOf: url)
             let image = data == nil ? nil : UIImage(data: data!)
-            let emoji = TextTypeEmoji(
+            let emoji = TextTypeCustomEmoji(
                 displayImage: image,
                 escapedString: ":octcat:",
                 size: .init(width: 14, height: 14)
@@ -128,7 +128,7 @@ extension ViewController: UITableViewDataSource {
             switch t {
             case .plain(let string):
                 result.append(NSAttributedString(string: string))
-            case .emoji(let value):
+            case .customEmoji(let value):
                 let attarchment = NSTextAttachment()
                 attarchment.image = value.displayImage
                 attarchment.bounds = .init(origin: .zero, size: .init(width: 17, height: 17))

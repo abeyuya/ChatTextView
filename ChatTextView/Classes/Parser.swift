@@ -12,7 +12,7 @@ public struct TextTypeMension {
     let escapedString: String
 }
 
-public struct TextTypeEmoji: Hashable {
+public struct TextTypeCustomEmoji: Hashable {
     public let displayImage: UIImage?
     public let escapedString: String
     public let size: CGSize
@@ -31,24 +31,46 @@ public struct TextTypeEmoji: Hashable {
 public enum TextType {
     case plain(String)
     //    case mention(TextTypeMension)
-    case emoji(TextTypeEmoji)
+    case customEmoji(TextTypeCustomEmoji)
 }
 
+private let customAttrKey = NSAttributedString.Key(rawValue: "ChatTextView")
+private let customEmojiUtf16Value = 65532
+
 enum Parser {
-    static func parse(attributedText: NSAttributedString, usedEmojis: [TextTypeEmoji]) -> [TextType] {
+    static func parse(attributedText: NSAttributedString, usedEmojis: [TextTypeCustomEmoji]) -> [TextType] {
         var result: [TextType] = []
 
-        for i in 0..<(attributedText.length) {
-            let str = attributedText.attributes(at: i, effectiveRange: nil)
+        let string = attributedText.string
+        for i in 0..<(string.count) {
+            let character = String(Array(string)[i])
 
-            if let emoji = str[.attachment] as? NSTextAttachment,
-                let usedEmoji = usedEmojis.first(where: { $0.displayImage == emoji.image }) {
-                result.append(TextType.emoji(usedEmoji))
+            // customEmoji
+            if let v = character.utf16.first, v == customEmojiUtf16Value {
+                let startIndex: Int = {
+                    if i == 0 {
+                        return 0
+                    }
+
+                    var offset = 0
+                    for j in 0..<i {
+                        let c = String(Array(string)[j])
+                        offset += c.utf16.count
+                    }
+                    return offset
+                }()
+
+                let attr = attributedText.attributes(at: startIndex, effectiveRange: nil)
+
+                if let emoji = attr[.attachment] as? NSTextAttachment,
+                    let usedEmoji = usedEmojis.first(where: { $0.displayImage == emoji.image }) {
+                    result.append(TextType.customEmoji(usedEmoji))
+                }
                 continue
             }
 
-            let r = attributedText.attributedSubstring(from: NSRange(location: i, length: 1))
-            result.append(TextType.plain(r.string))
+            // plain
+            result.append(TextType.plain(character))
         }
 
         return bundle(parsedResult: result)
@@ -65,13 +87,12 @@ enum Parser {
             }
 
             switch t {
-            case .emoji:
+            case .customEmoji:
                 if let b = bundlingPlain {
                     result.append(TextType.plain(b))
                     bundlingPlain = nil
                 }
                 result.append(t)
-                continue
             case .plain(let string):
                 guard let p = prev else {
                     bundlingPlain = string
@@ -80,7 +101,7 @@ enum Parser {
                 switch p {
                 case .plain:
                     bundlingPlain?.append(string)
-                case .emoji:
+                case .customEmoji:
                     bundlingPlain = string
                 }
             }

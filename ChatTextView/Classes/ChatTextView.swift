@@ -19,7 +19,7 @@ public class ChatTextView: UITextView {
             return c.firstAttribute == .height
         }
     }
-    var usedEmojis: [TextTypeEmoji] = []
+    var usedEmojis: [TextTypeCustomEmoji] = []
 
     public func setup(delegate: ChatTextViewDelegate) {
         self.delegate = self
@@ -27,7 +27,7 @@ public class ChatTextView: UITextView {
         setEmptyHeight()
     }
 
-    public func insert(emoji: TextTypeEmoji) {
+    public func insert(emoji: TextTypeCustomEmoji) {
         usedEmojis.append(emoji)
         usedEmojis = Array(Set(usedEmojis))
 
@@ -39,6 +39,7 @@ public class ChatTextView: UITextView {
         let origin = NSMutableAttributedString(attributedString: self.attributedText)
         origin.insert(attr, at: currentCursorPosition())
         self.attributedText = origin
+        textViewDidChange(self)
     }
 
     public func getCurrentTextTypes() -> [TextType] {
