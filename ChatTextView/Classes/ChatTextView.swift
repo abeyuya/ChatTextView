@@ -75,7 +75,7 @@ public class ChatTextView: UITextView {
         self.attributedText = NSAttributedString()
         textViewDidChange(self)
         setEmptyHeight()
-        renderingGifImageViews = []
+        removeAllAnimatedGif()
     }
 }
 
@@ -209,6 +209,11 @@ private extension ChatTextView {
                 self.renderingGifImageViews.append(RenderingGifImageView(id: id, imageView: iv))
             }
         }
+    }
+
+    func removeAllAnimatedGif() {
+        renderingGifImageViews.forEach { $0.imageView.removeFromSuperview() }
+        renderingGifImageViews = []
     }
 }
 
