@@ -33,7 +33,7 @@ public class ChatTextView: UITextView {
         setEmptyHeight()
     }
 
-    public func insert(emoji: TextTypeCustomEmoji) {
+    public func insert(emoji: TextTypeCustomEmoji, completion: @escaping () -> Void) {
         usedEmojis.append(emoji)
         usedEmojis = Array(Set(usedEmojis))
 
@@ -59,6 +59,7 @@ public class ChatTextView: UITextView {
             origin.insert(attr, at: self.currentCursorPosition())
             self.attributedText = origin
             self.textViewDidChange(self)
+            completion()
         }
     }
 

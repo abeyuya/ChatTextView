@@ -28,7 +28,7 @@ public struct TextTypeCustomEmoji: Hashable {
     }
 }
 
-public enum TextType {
+public enum TextType: Equatable {
     case plain(String)
     //    case mention(TextTypeMension)
     case customEmoji(TextTypeCustomEmoji)

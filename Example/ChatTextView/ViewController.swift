@@ -69,7 +69,7 @@ class ViewController: UIViewController {
                 escapedString: ":parrot:",
                 size: .init(width: 14, height: 14)
             )
-            self.chatTextView.insert(emoji: emoji)
+            self.chatTextView.insert(emoji: emoji) {}
         }
 
         let octcat = UIAlertAction(title: "octcat (png)", style: .default) { _ in
@@ -79,7 +79,7 @@ class ViewController: UIViewController {
                 escapedString: ":octcat:",
                 size: .init(width: 14, height: 14)
             )
-            self.chatTextView.insert(emoji: emoji)
+            self.chatTextView.insert(emoji: emoji) {}
         }
 
         let cancel = UIAlertAction(title: "cancel", style: .cancel) { _ in }
