@@ -104,4 +104,31 @@ class ChatTextViewTests: XCTestCase {
         print(result)
         XCTAssert(result == expect)
     }
+
+    func testDeleteMention() {
+        let t = ChatTextView()
+
+        let m1 = TextTypeMention(
+            displayString: "@here",
+            hiddenString: "<mention: here>"
+        )
+        t.insert(mention: m1)
+
+        let m2 = TextTypeMention(
+            displayString: "@user_name",
+            hiddenString: "<mention: user_id>"
+        )
+        t.insert(mention: m2)
+
+        t.deleteBackward()
+        t.deleteBackward()
+
+        let result = t.getCurrentTextTypes()
+        let expect: [TextType] = [
+            TextType.mention(m1),
+            TextType.plain(" "),
+        ]
+        print(result)
+        XCTAssert(result == expect)
+    }
 }
