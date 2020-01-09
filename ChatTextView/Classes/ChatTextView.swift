@@ -71,48 +71,13 @@ public class ChatTextView: UITextView {
 }
 
 private extension ChatTextView {
-//    func render(textTypes: [TextType]) {
-//        let lastCursorPosition = currentCursorPosition()
-//        defer {
-//            selectedRange = NSRange(location: lastCursorPosition, length: 0)
-//        }
-//
-//        text = ""
-//        attributedText = NSAttributedString()
-//        var emojiNumber = 0
-//
-//        textTypes.forEach { t in
-//            switch t {
-//            case .plain(let value):
-//                render(plain: value)
-//            case .mention(let value):
-//                render(mention: value)
-//            case .customEmoji(let value):
-//                render(idPrefix: String(emojiNumber), customEmoji: value) {
-//                    self.updateAnimatedGif()
-//                }
-//                emojiNumber += 1
-//            }
-//        }
-//
-//        let newFrame = calcLimitedFrame(text: text)
-//        update(frame: newFrame)
-//        updateAnimatedGif()
-//    }
-
-//    func moveCaret(offset: Int) {
-//        let current = selectedRange.location
-//        let to = current + offset
-//        self.selectedRange = NSRange(location: to, length: 0)
-//    }
-
     func render(mention: TextTypeMention) {
         usedMentions.append(mention)
         let attr = NSAttributedString(
             string: mention.displayString,
             attributes: [
                 .foregroundColor: UIColor.blue,
-                mentionAttrKey: true
+                mentionIdAttrKey: UUID().uuidString
             ]
         )
 
@@ -346,6 +311,22 @@ extension ChatTextView: UITextViewDelegate {
                 renderingGifImageViews.remove(at: i)
             }
             return true
+        }
+
+        // delete mention
+        if let targetMentionId = attrText.attribute(mentionIdAttrKey, at: 0, effectiveRange: nil) as? String, !targetMentionId.isEmpty {
+            textView.attributedText.enumerateAttribute(
+                mentionIdAttrKey,
+                in: NSRange(location: 0, length: textView.attributedText.length),
+                options: []
+            ) { mentionId, range, _ in
+                guard let mentionId = mentionId as? String else { return }
+                guard mentionId == targetMentionId else { return }
+                let mu = NSMutableAttributedString(attributedString: textView.attributedText)
+                mu.deleteCharacters(in: range)
+                textView.attributedText = mu
+            }
+            return false
         }
 
         return true

@@ -43,7 +43,7 @@ private let customEmojiUtf16Value = 65532
 
 internal let customEmojiImageUrlAttrKey = NSAttributedString.Key(rawValue: "customEmojiImageUrl")
 internal let customEmojiIdAttrKey = NSAttributedString.Key(rawValue: "customEmojiId")
-internal let mentionAttrKey = NSAttributedString.Key(rawValue: "mention")
+internal let mentionIdAttrKey = NSAttributedString.Key(rawValue: "mentionId")
 
 enum Parser {
     static func parse(
@@ -70,7 +70,7 @@ enum Parser {
             }
 
             // mention
-            if let isMention = attr[mentionAttrKey] as? Bool, isMention {
+            if let mentionId = attr[mentionIdAttrKey] as? String, !mentionId.isEmpty {
                 let m = TextTypeMention(
                     displayString: character,
                     hiddenString: character
@@ -171,20 +171,4 @@ enum Parser {
 
         return result
     }
-
-//    public static func removeInvalidMentions(
-//        textTypes: [TextType],
-//        usedMentions: [TextTypeMention]
-//    ) -> [TextType] {
-//        return textTypes.filter { t in
-//            switch t {
-//            case .plain, .customEmoji:
-//                return true
-//            case .mention(let value):
-//                let existValid = usedMentions.first(where: { $0.displayString == value.displayString })
-//
-//                return existValid != nil
-//            }
-//        }
-//    }
 }
