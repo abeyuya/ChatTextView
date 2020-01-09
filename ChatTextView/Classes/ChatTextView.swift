@@ -25,6 +25,7 @@ public class ChatTextView: UITextView {
         }
     }
     var usedEmojis: [TextTypeCustomEmoji] = []
+    var usedMentions: [TextTypeMention] = []
     var renderingGifImageViews: [RenderingGifImageView] = []
 
     public func setup(delegate: ChatTextViewDelegate) {
@@ -76,6 +77,7 @@ public class ChatTextView: UITextView {
         origin.insert(attr, at: self.currentCursorPosition())
         self.attributedText = origin
         insert(plain: " ")
+        usedMentions.append(mention)
     }
 
     public func insert(plain: String) {
@@ -89,7 +91,8 @@ public class ChatTextView: UITextView {
     public func getCurrentTextTypes() -> [TextType] {
         let parsed = Parser.parse(
             attributedText: self.attributedText,
-            usedEmojis: usedEmojis
+            usedEmojis: usedEmojis,
+            usedMentions: usedMentions
         )
         return parsed
     }
@@ -100,6 +103,7 @@ public class ChatTextView: UITextView {
         textViewDidChange(self)
         setEmptyHeight()
         removeAllAnimatedGif()
+        usedMentions = []
     }
 }
 
@@ -258,7 +262,8 @@ extension ChatTextView: UITextViewDelegate {
 
         let parsed = Parser.parse(
             attributedText: textView.attributedText,
-            usedEmojis: usedEmojis
+            usedEmojis: usedEmojis,
+            usedMentions: usedMentions
         )
         self.chatTextViewDelegate?.didChange(textTypes: parsed)
         updateAnimatedGif()

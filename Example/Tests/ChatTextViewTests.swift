@@ -2,15 +2,15 @@ import XCTest
 import ChatTextView
 
 class ChatTextViewTests: XCTestCase {
-    
+
     override func setUp() {
         super.setUp()
     }
-    
+
     override func tearDown() {
         super.tearDown()
     }
-    
+
     func testGetCurrentTextTypes1() {
         let t = ChatTextView()
         t.attributedText = NSAttributedString(string: "hello")
@@ -66,7 +66,10 @@ class ChatTextViewTests: XCTestCase {
 
     func testGetCurrentTextTypes4() {
         let t = ChatTextView()
-        let m = TextTypeMention(displayString: "@here", escapedString: "@here")
+        let m = TextTypeMention(
+            displayString: "@here",
+            hiddenString: "<mention: here>"
+        )
         t.insert(mention: m)
         let result = t.getCurrentTextTypes()
         let expect: [TextType] = [
@@ -79,10 +82,16 @@ class ChatTextViewTests: XCTestCase {
     func testGetCurrentTextTypes5() {
         let t = ChatTextView()
 
-        let m1 = TextTypeMention(displayString: "@here", escapedString: "@here")
+        let m1 = TextTypeMention(
+            displayString: "@here",
+            hiddenString: "<mention: here>"
+        )
         t.insert(mention: m1)
 
-        let m2 = TextTypeMention(displayString: "@channel", escapedString: "@channel")
+        let m2 = TextTypeMention(
+            displayString: "@user_name",
+            hiddenString: "<mention: user_id>"
+        )
         t.insert(mention: m2)
 
         let result = t.getCurrentTextTypes()

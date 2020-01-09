@@ -9,11 +9,11 @@ import Foundation
 
 public struct TextTypeMention: Equatable {
     public let displayString: String
-    public let escapedString: String
+    public let hiddenString: String
 
-    public init(displayString: String, escapedString: String) {
+    public init(displayString: String, hiddenString: String) {
         self.displayString = displayString
-        self.escapedString = escapedString
+        self.hiddenString = hiddenString
     }
 }
 
@@ -40,12 +40,17 @@ public enum TextType: Equatable {
 }
 
 private let customEmojiUtf16Value = 65532
+
 internal let customEmojiImageUrlAttrKey = NSAttributedString.Key(rawValue: "customEmojiImageUrl")
 internal let customEmojiIdAttrKey = NSAttributedString.Key(rawValue: "customEmojiIdImageUrl")
 internal let mentionAttrKey = NSAttributedString.Key(rawValue: "mention")
 
 enum Parser {
-    static func parse(attributedText: NSAttributedString, usedEmojis: [TextTypeCustomEmoji]) -> [TextType] {
+    static func parse(
+        attributedText: NSAttributedString,
+        usedEmojis: [TextTypeCustomEmoji],
+        usedMentions: [TextTypeMention]
+    ) -> [TextType] {
         var result: [TextType] = []
 
         let string = attributedText.string
@@ -68,7 +73,7 @@ enum Parser {
             if let isMention = attr[mentionAttrKey] as? Bool, isMention {
                 let m = TextTypeMention(
                     displayString: character,
-                    escapedString: character
+                    hiddenString: character
                 )
                 result.append(TextType.mention(m))
                 continue
@@ -78,7 +83,7 @@ enum Parser {
             result.append(TextType.plain(character))
         }
 
-        return bundle(parsedResult: result)
+        return bundle(parsedResult: result, usedMentions: usedMentions)
     }
 
     private static func convertToLengthIndex(at: Int, attributedString: NSAttributedString) -> Int {
@@ -100,7 +105,10 @@ enum Parser {
         return startIndex
     }
 
-    private static func bundle(parsedResult: [TextType]) -> [TextType] {
+    private static func bundle(
+        parsedResult: [TextType],
+        usedMentions: [TextTypeMention]
+    ) -> [TextType] {
         var result: [TextType] = []
         var prev: TextType?
         var bundlingPlain: String?
@@ -113,9 +121,9 @@ enum Parser {
             }
         }
         let insertBundlingMention = {
-            if let b = bundlingMention {
-                let m = TextTypeMention(displayString: b, escapedString: b)
-                result.append(TextType.mention(m))
+            if let b = bundlingMention,
+                let usedMention = usedMentions.first(where: { $0.displayString == b }) {
+                result.append(TextType.mention(usedMention))
                 bundlingMention = nil
             }
         }
