@@ -42,7 +42,7 @@ public enum TextType: Equatable {
 private let customEmojiUtf16Value = 65532
 
 internal let customEmojiImageUrlAttrKey = NSAttributedString.Key(rawValue: "customEmojiImageUrl")
-internal let customEmojiIdAttrKey = NSAttributedString.Key(rawValue: "customEmojiIdImageUrl")
+internal let customEmojiIdAttrKey = NSAttributedString.Key(rawValue: "customEmojiId")
 internal let mentionAttrKey = NSAttributedString.Key(rawValue: "mention")
 
 enum Parser {
@@ -169,22 +169,22 @@ enum Parser {
         insertBundlingPlain()
         insertBundlingMention()
 
-        return removeInvalidMentions(textTypes: result, usedMentions: usedMentions)
+        return result
     }
 
-    private static func removeInvalidMentions(
-        textTypes: [TextType],
-        usedMentions: [TextTypeMention]
-    ) -> [TextType] {
-        return textTypes.filter { t in
-            switch t {
-            case .plain, .customEmoji:
-                return true
-            case .mention(let value):
-                let existValid = usedMentions.first(where: { $0.displayString == value.displayString })
-
-                return existValid != nil
-            }
-        }
-    }
+//    public static func removeInvalidMentions(
+//        textTypes: [TextType],
+//        usedMentions: [TextTypeMention]
+//    ) -> [TextType] {
+//        return textTypes.filter { t in
+//            switch t {
+//            case .plain, .customEmoji:
+//                return true
+//            case .mention(let value):
+//                let existValid = usedMentions.first(where: { $0.displayString == value.displayString })
+//
+//                return existValid != nil
+//            }
+//        }
+//    }
 }

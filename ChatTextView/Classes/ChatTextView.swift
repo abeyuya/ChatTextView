@@ -35,7 +35,7 @@ public class ChatTextView: UITextView {
     }
 
     public func insert(emoji: TextTypeCustomEmoji, completion: @escaping () -> Void) {
-        render(customEmoji: emoji) {
+        render(idPrefix: UUID().uuidString, customEmoji: emoji) {
             self.textViewDidChange(self)
             completion()
         }
@@ -71,6 +71,41 @@ public class ChatTextView: UITextView {
 }
 
 private extension ChatTextView {
+//    func render(textTypes: [TextType]) {
+//        let lastCursorPosition = currentCursorPosition()
+//        defer {
+//            selectedRange = NSRange(location: lastCursorPosition, length: 0)
+//        }
+//
+//        text = ""
+//        attributedText = NSAttributedString()
+//        var emojiNumber = 0
+//
+//        textTypes.forEach { t in
+//            switch t {
+//            case .plain(let value):
+//                render(plain: value)
+//            case .mention(let value):
+//                render(mention: value)
+//            case .customEmoji(let value):
+//                render(idPrefix: String(emojiNumber), customEmoji: value) {
+//                    self.updateAnimatedGif()
+//                }
+//                emojiNumber += 1
+//            }
+//        }
+//
+//        let newFrame = calcLimitedFrame(text: text)
+//        update(frame: newFrame)
+//        updateAnimatedGif()
+//    }
+
+//    func moveCaret(offset: Int) {
+//        let current = selectedRange.location
+//        let to = current + offset
+//        self.selectedRange = NSRange(location: to, length: 0)
+//    }
+
     func render(mention: TextTypeMention) {
         usedMentions.append(mention)
         let attr = NSAttributedString(
@@ -86,9 +121,20 @@ private extension ChatTextView {
         self.attributedText = origin
     }
 
-    func render(customEmoji: TextTypeCustomEmoji, completion: @escaping () -> Void) {
+    func render(
+        idPrefix: String,
+        customEmoji: TextTypeCustomEmoji,
+        completion: @escaping () -> Void
+    ) {
         usedEmojis.append(customEmoji)
         usedEmojis = Array(Set(usedEmojis))
+        let id = "\(idPrefix)-\(customEmoji.displayImageUrl.absoluteString)"
+
+        if self.renderingGifImageViews.first(where: { $0.id == id }) != nil {
+            return
+        }
+
+        let cursorPosition = currentCursorPosition()
 
         createAnimatedImage(imageUrl: customEmoji.displayImageUrl) { image in
             let attarchment = NSTextAttachment()
@@ -99,7 +145,6 @@ private extension ChatTextView {
             }
             attarchment.bounds = .init(origin: .zero, size: customEmoji.size)
             let attr = NSMutableAttributedString(attachment: attarchment)
-            let id = UUID().uuidString
             attr.addAttributes(
                 [
                     customEmojiImageUrlAttrKey: customEmoji.displayImageUrl.absoluteString,
@@ -109,7 +154,7 @@ private extension ChatTextView {
             )
 
             let origin = NSMutableAttributedString(attributedString: self.attributedText)
-            origin.insert(attr, at: self.currentCursorPosition())
+            origin.insert(attr, at: cursorPosition)
             self.attributedText = origin
             completion()
         }
@@ -181,9 +226,9 @@ private extension ChatTextView {
     }
 
     func currentCursorPosition() -> Int {
-        guard let selectedRange = self.selectedTextRange else { return 0 }
-        let cursorPosition = self.offset(
-            from: self.beginningOfDocument,
+        guard let selectedRange = selectedTextRange else { return 0 }
+        let cursorPosition = offset(
+            from: beginningOfDocument,
             to: selectedRange.start
         )
         return cursorPosition
@@ -271,15 +316,38 @@ private extension NSObject {
 
 extension ChatTextView: UITextViewDelegate {
     public func textViewDidChange(_ textView: UITextView) {
-        let newFrame = calcLimitedFrame(text: textView.text)
-        update(frame: newFrame)
-
         let parsed = Parser.parse(
             attributedText: textView.attributedText,
             usedEmojis: usedEmojis,
             usedMentions: usedMentions
         )
-        self.chatTextViewDelegate?.didChange(textTypes: parsed)
+
+        let newFrame = calcLimitedFrame(text: text)
+        update(frame: newFrame)
         updateAnimatedGif()
+        self.chatTextViewDelegate?.didChange(textTypes: parsed)
+    }
+
+    public func textView(
+        _ textView: UITextView,
+        shouldChangeTextIn range: NSRange,
+        replacementText text: String
+    ) -> Bool {
+        guard text.isEmpty else { return true }
+        let attrText = textView.attributedText.attributedSubstring(from: range)
+        if attrText.string.isEmpty {
+            return true
+        }
+
+        // delete custom emoji
+        if let id = attrText.attribute(customEmojiIdAttrKey, at: 0, effectiveRange: nil) as? String {
+            if let i = renderingGifImageViews.firstIndex(where: { $0.id == id }) {
+                renderingGifImageViews[i].imageView.removeFromSuperview()
+                renderingGifImageViews.remove(at: i)
+            }
+            return true
+        }
+
+        return true
     }
 }
