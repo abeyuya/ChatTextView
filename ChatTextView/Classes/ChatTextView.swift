@@ -35,62 +35,25 @@ public class ChatTextView: UITextView {
     }
 
     public func insert(emoji: TextTypeCustomEmoji, completion: @escaping () -> Void) {
-        usedEmojis.append(emoji)
-        usedEmojis = Array(Set(usedEmojis))
-
-        createAnimatedImage(imageUrl: emoji.displayImageUrl) { image in
-            let attarchment = NSTextAttachment()
-            if emoji.displayImageUrl.pathExtension != "gif" {
-                attarchment.image = image
-            } else {
-                attarchment.image = UIImage()
-            }
-            attarchment.bounds = .init(origin: .zero, size: emoji.size)
-            let attr = NSMutableAttributedString(attachment: attarchment)
-            let id = UUID().uuidString
-            attr.addAttributes(
-                [
-                    customEmojiImageUrlAttrKey: emoji.displayImageUrl.absoluteString,
-                    customEmojiIdAttrKey: id
-                ],
-                range: NSRange(location: 0, length: attr.length)
-            )
-
-            let origin = NSMutableAttributedString(attributedString: self.attributedText)
-            origin.insert(attr, at: self.currentCursorPosition())
-            self.attributedText = origin
+        render(customEmoji: emoji) {
             self.textViewDidChange(self)
             completion()
         }
     }
 
     public func insert(mention: TextTypeMention) {
-        let attr = NSAttributedString(
-            string: mention.displayString,
-            attributes: [
-                .foregroundColor: UIColor.blue,
-                mentionAttrKey: true
-            ]
-        )
-
-        let origin = NSMutableAttributedString(attributedString: self.attributedText)
-        origin.insert(attr, at: self.currentCursorPosition())
-        self.attributedText = origin
+        render(mention: mention)
         insert(plain: " ")
-        usedMentions.append(mention)
     }
 
     public func insert(plain: String) {
-        let attr = NSAttributedString(string: plain)
-        let origin = NSMutableAttributedString(attributedString: self.attributedText)
-        origin.insert(attr, at: self.currentCursorPosition())
-        self.attributedText = origin
-        self.textViewDidChange(self)
+        render(plain: plain)
+        textViewDidChange(self)
     }
 
     public func getCurrentTextTypes() -> [TextType] {
         let parsed = Parser.parse(
-            attributedText: self.attributedText,
+            attributedText: attributedText,
             usedEmojis: usedEmojis,
             usedMentions: usedMentions
         )
@@ -108,6 +71,57 @@ public class ChatTextView: UITextView {
 }
 
 private extension ChatTextView {
+    func render(mention: TextTypeMention) {
+        usedMentions.append(mention)
+        let attr = NSAttributedString(
+            string: mention.displayString,
+            attributes: [
+                .foregroundColor: UIColor.blue,
+                mentionAttrKey: true
+            ]
+        )
+
+        let origin = NSMutableAttributedString(attributedString: self.attributedText)
+        origin.insert(attr, at: currentCursorPosition())
+        self.attributedText = origin
+    }
+
+    func render(customEmoji: TextTypeCustomEmoji, completion: @escaping () -> Void) {
+        usedEmojis.append(customEmoji)
+        usedEmojis = Array(Set(usedEmojis))
+
+        createAnimatedImage(imageUrl: customEmoji.displayImageUrl) { image in
+            let attarchment = NSTextAttachment()
+            if customEmoji.displayImageUrl.pathExtension != "gif" {
+                attarchment.image = image
+            } else {
+                attarchment.image = UIImage()
+            }
+            attarchment.bounds = .init(origin: .zero, size: customEmoji.size)
+            let attr = NSMutableAttributedString(attachment: attarchment)
+            let id = UUID().uuidString
+            attr.addAttributes(
+                [
+                    customEmojiImageUrlAttrKey: customEmoji.displayImageUrl.absoluteString,
+                    customEmojiIdAttrKey: id
+                ],
+                range: NSRange(location: 0, length: attr.length)
+            )
+
+            let origin = NSMutableAttributedString(attributedString: self.attributedText)
+            origin.insert(attr, at: self.currentCursorPosition())
+            self.attributedText = origin
+            completion()
+        }
+    }
+
+    func render(plain: String) {
+        let attr = NSAttributedString(string: plain)
+        let origin = NSMutableAttributedString(attributedString: attributedText)
+        origin.insert(attr, at: currentCursorPosition())
+        attributedText = origin
+    }
+
     func setEmptyHeight() {
         let newFrame = calcLimitedFrame(text: "")
         update(frame: newFrame)

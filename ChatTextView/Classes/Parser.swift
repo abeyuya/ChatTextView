@@ -115,17 +115,15 @@ enum Parser {
         var bundlingMention: String?
 
         let insertBundlingPlain = {
-            if let b = bundlingPlain {
-                result.append(TextType.plain(b))
-                bundlingPlain = nil
-            }
+            guard let b = bundlingPlain else { return }
+            result.append(TextType.plain(b))
+            bundlingPlain = nil
         }
         let insertBundlingMention = {
-            if let b = bundlingMention,
-                let usedMention = usedMentions.first(where: { $0.displayString == b }) {
-                result.append(TextType.mention(usedMention))
-                bundlingMention = nil
-            }
+            guard let b = bundlingMention else { return }
+            guard let usedMention = usedMentions.first(where: { $0.displayString == b }) else { return }
+            result.append(TextType.mention(usedMention))
+            bundlingMention = nil
         }
 
         for t in parsedResult {
@@ -171,6 +169,22 @@ enum Parser {
         insertBundlingPlain()
         insertBundlingMention()
 
-        return result
+        return removeInvalidMentions(textTypes: result, usedMentions: usedMentions)
+    }
+
+    private static func removeInvalidMentions(
+        textTypes: [TextType],
+        usedMentions: [TextTypeMention]
+    ) -> [TextType] {
+        return textTypes.filter { t in
+            switch t {
+            case .plain, .customEmoji:
+                return true
+            case .mention(let value):
+                let existValid = usedMentions.first(where: { $0.displayString == value.displayString })
+
+                return existValid != nil
+            }
+        }
     }
 }
