@@ -63,6 +63,29 @@ public class ChatTextView: UITextView {
         }
     }
 
+    public func insert(mention: TextTypeMention) {
+        let attr = NSAttributedString(
+            string: mention.displayString,
+            attributes: [
+                .foregroundColor: UIColor.blue,
+                mentionAttrKey: true
+            ]
+        )
+
+        let origin = NSMutableAttributedString(attributedString: self.attributedText)
+        origin.insert(attr, at: self.currentCursorPosition())
+        self.attributedText = origin
+        insert(plain: " ")
+    }
+
+    public func insert(plain: String) {
+        let attr = NSAttributedString(string: plain)
+        let origin = NSMutableAttributedString(attributedString: self.attributedText)
+        origin.insert(attr, at: self.currentCursorPosition())
+        self.attributedText = origin
+        self.textViewDidChange(self)
+    }
+
     public func getCurrentTextTypes() -> [TextType] {
         let parsed = Parser.parse(
             attributedText: self.attributedText,

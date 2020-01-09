@@ -27,7 +27,7 @@ class ViewController: UIViewController {
     }
     @IBOutlet weak var mensionButton: UIButton! {
         didSet {
-            mensionButton.addTarget(self, action: #selector(didTapMensionButton), for: .touchUpInside)
+            mensionButton.addTarget(self, action: #selector(didTapMentionButton), for: .touchUpInside)
         }
     }
 
@@ -60,7 +60,11 @@ class ViewController: UIViewController {
 
     @objc
     func didTapEmojiButton() {
-        let vc = UIAlertController(title: "", message: "emoji", preferredStyle: .actionSheet)
+        let vc = UIAlertController(
+            title: "",
+            message: "insert custom emoji",
+            preferredStyle: .actionSheet
+        )
 
         let parrot = UIAlertAction(title: "parrot (gif)", style: .default) { _ in
             let url = URL(string: "https://emoji.slack-edge.com/T02DMDKPY/parrot/2c74b5af5aa44406.gif")!
@@ -91,8 +95,35 @@ class ViewController: UIViewController {
     }
 
     @objc
-    func didTapMensionButton() {
+    func didTapMentionButton() {
+        let vc = UIAlertController(
+            title: "",
+            message: "insert mention",
+            preferredStyle: .actionSheet
+        )
 
+        let atChannel = UIAlertAction(title: "@channel", style: .default) { _ in
+            let mention = TextTypeMention(
+                displayString: "@channel",
+                escapedString: "@channel"
+            )
+            self.chatTextView.insert(mention: mention)
+        }
+
+        let atName = UIAlertAction(title: "@名前", style: .default) { _ in
+            let mention = TextTypeMention(
+                displayString: "@名前",
+                escapedString: "@名前"
+            )
+            self.chatTextView.insert(mention: mention)
+        }
+
+        let cancel = UIAlertAction(title: "cancel", style: .cancel) { _ in }
+
+        vc.addAction(atChannel)
+        vc.addAction(atName)
+        vc.addAction(cancel)
+        present(vc, animated: true)
     }
 }
 
@@ -137,6 +168,14 @@ extension ViewController: UITableViewDataSource {
                 attarchment.image = image
                 attarchment.bounds = .init(origin: .zero, size: .init(width: 17, height: 17))
                 let attr = NSAttributedString(attachment: attarchment)
+                result.append(attr)
+            case .mention(let value):
+                let attr = NSAttributedString(
+                    string: value.displayString,
+                    attributes: [
+                        NSAttributedString.Key.foregroundColor: UIColor.blue
+                    ]
+                )
                 result.append(attr)
             }
         }

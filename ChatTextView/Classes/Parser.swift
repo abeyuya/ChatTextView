@@ -7,9 +7,14 @@
 
 import Foundation
 
-public struct TextTypeMension {
-    let displayString: String
-    let escapedString: String
+public struct TextTypeMention: Equatable {
+    public let displayString: String
+    public let escapedString: String
+
+    public init(displayString: String, escapedString: String) {
+        self.displayString = displayString
+        self.escapedString = escapedString
+    }
 }
 
 public struct TextTypeCustomEmoji: Hashable {
@@ -30,13 +35,14 @@ public struct TextTypeCustomEmoji: Hashable {
 
 public enum TextType: Equatable {
     case plain(String)
-    //    case mention(TextTypeMension)
+    case mention(TextTypeMention)
     case customEmoji(TextTypeCustomEmoji)
 }
 
 private let customEmojiUtf16Value = 65532
 internal let customEmojiImageUrlAttrKey = NSAttributedString.Key(rawValue: "customEmojiImageUrl")
 internal let customEmojiIdAttrKey = NSAttributedString.Key(rawValue: "customEmojiIdImageUrl")
+internal let mentionAttrKey = NSAttributedString.Key(rawValue: "mention")
 
 enum Parser {
     static func parse(attributedText: NSAttributedString, usedEmojis: [TextTypeCustomEmoji]) -> [TextType] {
@@ -46,27 +52,25 @@ enum Parser {
         for i in 0..<(string.count) {
             let character = String(Array(string)[i])
 
+            let lengthIndex = convertToLengthIndex(at: i, attributedString: attributedText)
+            let attr = attributedText.attributes(at: lengthIndex, effectiveRange: nil)
+
             // customEmoji
             if let v = character.utf16.first, v == customEmojiUtf16Value {
-                let startIndex: Int = {
-                    if i == 0 {
-                        return 0
-                    }
-
-                    var offset = 0
-                    for j in 0..<i {
-                        let c = String(Array(string)[j])
-                        offset += c.utf16.count
-                    }
-                    return offset
-                }()
-
-                let attr = attributedText.attributes(at: startIndex, effectiveRange: nil)
-
                 if let emojiImageUrl = attr[customEmojiImageUrlAttrKey] as? String,
                     let usedEmoji = usedEmojis.first(where: { $0.displayImageUrl.absoluteString == emojiImageUrl }) {
                     result.append(TextType.customEmoji(usedEmoji))
                 }
+                continue
+            }
+
+            // mention
+            if let isMention = attr[mentionAttrKey] as? Bool, isMention {
+                let m = TextTypeMention(
+                    displayString: character,
+                    escapedString: character
+                )
+                result.append(TextType.mention(m))
                 continue
             }
 
@@ -77,10 +81,44 @@ enum Parser {
         return bundle(parsedResult: result)
     }
 
+    private static func convertToLengthIndex(at: Int, attributedString: NSAttributedString) -> Int {
+        let string = attributedString.string
+
+        let startIndex: Int = {
+            if at == 0 {
+                return 0
+            }
+
+            var offset = 0
+            for j in 0..<at {
+                let c = String(Array(string)[j])
+                offset += c.utf16.count
+            }
+            return offset
+        }()
+
+        return startIndex
+    }
+
     private static func bundle(parsedResult: [TextType]) -> [TextType] {
         var result: [TextType] = []
         var prev: TextType?
         var bundlingPlain: String?
+        var bundlingMention: String?
+
+        let insertBundlingPlain = {
+            if let b = bundlingPlain {
+                result.append(TextType.plain(b))
+                bundlingPlain = nil
+            }
+        }
+        let insertBundlingMention = {
+            if let b = bundlingMention {
+                let m = TextTypeMention(displayString: b, escapedString: b)
+                result.append(TextType.mention(m))
+                bundlingMention = nil
+            }
+        }
 
         for t in parsedResult {
             defer {
@@ -88,12 +126,6 @@ enum Parser {
             }
 
             switch t {
-            case .customEmoji:
-                if let b = bundlingPlain {
-                    result.append(TextType.plain(b))
-                    bundlingPlain = nil
-                }
-                result.append(t)
             case .plain(let string):
                 guard let p = prev else {
                     bundlingPlain = string
@@ -104,14 +136,32 @@ enum Parser {
                     bundlingPlain?.append(string)
                 case .customEmoji:
                     bundlingPlain = string
+                case .mention:
+                    insertBundlingMention()
+                    bundlingPlain = string
+                }
+            case .customEmoji:
+                insertBundlingPlain()
+                insertBundlingMention()
+                result.append(t)
+            case .mention(let value):
+                guard let p = prev else {
+                    bundlingMention = value.displayString
+                    continue
+                }
+                switch p {
+                case .mention:
+                    bundlingMention?.append(value.displayString)
+                case .customEmoji, .plain:
+                    insertBundlingPlain()
+                    insertBundlingMention()
+                    bundlingMention = value.displayString
                 }
             }
         }
 
-        if let b = bundlingPlain {
-            result.append(TextType.plain(b))
-            bundlingPlain = nil
-        }
+        insertBundlingPlain()
+        insertBundlingMention()
 
         return result
     }

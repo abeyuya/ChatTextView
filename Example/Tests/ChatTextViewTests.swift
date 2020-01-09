@@ -49,9 +49,7 @@ class ChatTextViewTests: XCTestCase {
             size: CGSize(width: 14, height: 14)
         )
         t.insert(emoji: e) {
-            let mu = NSMutableAttributedString(attributedString: t.attributedText)
-            mu.append(NSAttributedString(string: "world"))
-            t.attributedText = mu
+            t.insert(plain: "world")
 
             let result = t.getCurrentTextTypes()
             let expect: [TextType] = [
@@ -64,5 +62,37 @@ class ChatTextViewTests: XCTestCase {
         }
 
         wait(for: [exp], timeout: 5)
+    }
+
+    func testGetCurrentTextTypes4() {
+        let t = ChatTextView()
+        let m = TextTypeMention(displayString: "@here", escapedString: "@here")
+        t.insert(mention: m)
+        let result = t.getCurrentTextTypes()
+        let expect: [TextType] = [
+            TextType.mention(m),
+            TextType.plain(" ")
+        ]
+        XCTAssert(result == expect)
+    }
+
+    func testGetCurrentTextTypes5() {
+        let t = ChatTextView()
+
+        let m1 = TextTypeMention(displayString: "@here", escapedString: "@here")
+        t.insert(mention: m1)
+
+        let m2 = TextTypeMention(displayString: "@channel", escapedString: "@channel")
+        t.insert(mention: m2)
+
+        let result = t.getCurrentTextTypes()
+        let expect: [TextType] = [
+            TextType.mention(m1),
+            TextType.plain(" "),
+            TextType.mention(m2),
+            TextType.plain(" ")
+        ]
+        print(result)
+        XCTAssert(result == expect)
     }
 }
