@@ -17,7 +17,10 @@ public class ChatTextView: UITextView {
         let imageView: UIImageView
     }
 
+    // settings
     var maxHeight: CGFloat?
+    var defaultTextColor: UIColor = .black
+
     var chatTextViewDelegate: ChatTextViewDelegate?
     var heightLayoutConstraint: NSLayoutConstraint? {
         self.constraints.first { c in
@@ -73,7 +76,7 @@ public class ChatTextView: UITextView {
 private extension ChatTextView {
     func render(mention: TextTypeMention) {
         usedMentions.append(mention)
-        let attr = NSAttributedString(
+        let attrString = NSAttributedString(
             string: mention.displayString,
             attributes: [
                 .foregroundColor: UIColor.blue,
@@ -82,7 +85,7 @@ private extension ChatTextView {
         )
 
         let origin = NSMutableAttributedString(attributedString: self.attributedText)
-        origin.insert(attr, at: currentCursorPosition())
+        origin.insert(attrString, at: currentCursorPosition())
         self.attributedText = origin
     }
 
@@ -281,6 +284,9 @@ private extension NSObject {
 
 extension ChatTextView: UITextViewDelegate {
     public func textViewDidChange(_ textView: UITextView) {
+        textView.typingAttributes = [
+            .foregroundColor: defaultTextColor
+        ]
         let parsed = Parser.parse(
             attributedText: textView.attributedText,
             usedEmojis: usedEmojis,
@@ -300,7 +306,11 @@ extension ChatTextView: UITextViewDelegate {
     ) -> Bool {
         guard text.isEmpty else { return true }
         let attrText = textView.attributedText.attributedSubstring(from: range)
+
         if attrText.string.isEmpty {
+            // all character deleted
+            removeAllAnimatedGif()
+            usedMentions = []
             return true
         }
 
