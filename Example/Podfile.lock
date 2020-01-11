@@ -5,6 +5,7 @@ PODS:
   - FBSnapshotTestCase/Core (2.1.4)
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
+  - Mockit (1.5.0)
   - Nimble (8.0.5)
   - Quick (2.2.0)
   - UnderKeyboard (13.0.2)
@@ -12,6 +13,7 @@ PODS:
 DEPENDENCIES:
   - ChatTextView (from `../`)
   - FBSnapshotTestCase (~> 2.1.4)
+  - Mockit
   - Nimble
   - Quick
   - UnderKeyboard
@@ -19,6 +21,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - FBSnapshotTestCase
+    - Mockit
     - Nimble
     - Quick
     - UnderKeyboard
@@ -30,10 +33,11 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   ChatTextView: 9b671bc311f6db34e6ff1254c4356fedfe2985b6
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
+  Mockit: 09492d654a2945096603d76ea77b131bdcfb2233
   Nimble: 4ab1aeb9b45553c75b9687196b0fa0713170a332
   Quick: 7fb19e13be07b5dfb3b90d4f9824c855a11af40e
   UnderKeyboard: 79ea6feb497af99c1856aaae0ab8ded3c739f745
 
-PODFILE CHECKSUM: f45218351c84ba55a6ad3aa1487b7261ee345328
+PODFILE CHECKSUM: e51be05d74a52c65b55ed4ddd72401551d941f15
 
 COCOAPODS: 1.8.4

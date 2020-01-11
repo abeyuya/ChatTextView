@@ -337,7 +337,7 @@ extension ChatTextView: UITextViewDelegate {
                 textView.attributedText = mu
                 textViewDidChange(textView)
             }
-            return true
+            return false
         }
 
         return true

@@ -10,5 +10,6 @@ target 'ChatTextView_Example' do
     pod 'FBSnapshotTestCase' , '~> 2.1.4'
     pod 'Quick'
     pod 'Nimble'
+    pod 'Mockit'
   end
 end

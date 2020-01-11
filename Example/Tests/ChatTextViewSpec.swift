@@ -9,6 +9,7 @@
 import Foundation
 import Quick
 import Nimble
+import Mockit
 import ChatTextView
 
 class ChatTextViewSpec: QuickSpec {
@@ -144,6 +145,36 @@ class ChatTextViewSpec: QuickSpec {
                 ]
 
                 expect(result).to(equal(expectResult))
+            }
+        }
+
+        describe("when delete mention") {
+
+            class DelegateStub: Stub, ChatTextViewDelegate {
+                func didChange(textView: ChatTextView, textTypes: [TextType]) {
+                    callCount += 1
+                }
+            }
+
+            it("call delegate correctly") {
+                let t = ChatTextView()
+                let stub = DelegateStub()
+
+                t.setup(delegate: stub)
+                expect(stub.callCount).to(equal(0))
+
+                let m1 = TextTypeMention(
+                    displayString: "@here",
+                    hiddenString: "<mention: here>"
+                )
+                t.insert(mention: m1)
+                expect(stub.callCount).to(equal(1))
+
+                t.deleteBackward()
+                expect(stub.callCount).to(equal(2))
+
+                t.deleteBackward()
+                expect(stub.callCount).to(equal(3))
             }
         }
     }
