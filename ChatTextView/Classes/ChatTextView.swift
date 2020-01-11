@@ -335,8 +335,9 @@ extension ChatTextView: UITextViewDelegate {
                 let mu = NSMutableAttributedString(attributedString: textView.attributedText)
                 mu.deleteCharacters(in: range)
                 textView.attributedText = mu
+                textViewDidChange(textView)
             }
-            return false
+            return true
         }
 
         return true

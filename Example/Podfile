@@ -8,5 +8,7 @@ target 'ChatTextView_Example' do
     inherit! :search_paths
 
     pod 'FBSnapshotTestCase' , '~> 2.1.4'
+    pod 'Quick'
+    pod 'Nimble'
   end
 end
