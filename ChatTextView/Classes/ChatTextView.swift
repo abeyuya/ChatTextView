@@ -38,7 +38,7 @@ open class ChatTextView: UITextView {
     }
 
     public func insert(emoji: TextTypeCustomEmoji, completion: @escaping () -> Void) {
-        render(idPrefix: UUID().uuidString, customEmoji: emoji) {
+        render(id: UUID().uuidString, customEmoji: emoji) {
             self.textViewDidChange(self)
             completion()
         }
@@ -90,13 +90,12 @@ private extension ChatTextView {
     }
 
     func render(
-        idPrefix: String,
+        id: String,
         customEmoji: TextTypeCustomEmoji,
         completion: @escaping () -> Void
     ) {
         usedEmojis.append(customEmoji)
         usedEmojis = Array(Set(usedEmojis))
-        let id = "\(idPrefix)-\(customEmoji.displayImageUrl.absoluteString)"
 
         if self.renderingGifImageViews.first(where: { $0.id == id }) != nil {
             return
@@ -106,10 +105,11 @@ private extension ChatTextView {
 
         createAnimatedImage(imageUrl: customEmoji.displayImageUrl) { image in
             let attarchment = NSTextAttachment()
-            if customEmoji.displayImageUrl.pathExtension != "gif" {
-                attarchment.image = image
-            } else {
+            if customEmoji.displayImageUrl.pathExtension == "gif" {
+                // render gif image at renderAnimatedGif()
                 attarchment.image = UIImage()
+            } else {
+                attarchment.image = image
             }
             attarchment.bounds = .init(origin: .zero, size: customEmoji.size)
             let attr = NSMutableAttributedString(attachment: attarchment)
@@ -226,21 +226,21 @@ private extension ChatTextView {
         }
     }
 
-    func updateAnimatedGif() {
+    func renderAnimatedGif() {
         let lastCursorPosition = currentCursorPosition()
         let fullRange = NSRange(location: 0, length: attributedText.length)
 
         attributedText.enumerateAttribute(
             customEmojiImageUrlAttrKey,
             in: fullRange,
-            options: []
+            options: [.longestEffectiveRangeNotRequired]
         ) { urlString, range, _ in
             guard let u = urlString as? String, let url = URL(string: u) else { return }
             guard url.pathExtension == "gif" else { return }
             guard let usingEmoji = usedEmojis.first(where: { $0.displayImageUrl.absoluteString == u }) else { return }
 
-            let attr = attributedText.attributedSubstring(from: range)
-            guard let id = attr.attribute(customEmojiIdAttrKey, at: 0, effectiveRange: nil) as? String else { return }
+            let attrString = attributedText.attributedSubstring(from: range)
+            guard let id = attrString.attribute(customEmojiIdAttrKey, at: 0, effectiveRange: nil) as? String else { return }
 
             selectedRange = range
             defer {
@@ -295,7 +295,7 @@ extension ChatTextView: UITextViewDelegate {
 
         let newFrame = calcLimitedFrame(text: text)
         update(frame: newFrame)
-        updateAnimatedGif()
+        renderAnimatedGif()
         self.chatTextViewDelegate?.didChange(textView: self, textTypes: parsed)
     }
 
