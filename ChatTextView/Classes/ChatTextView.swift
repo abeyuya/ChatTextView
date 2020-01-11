@@ -71,9 +71,37 @@ open class ChatTextView: UITextView {
         removeAllAnimatedGif()
         usedMentions = []
     }
+
+    public func render(textTypes: [TextType], completion: @escaping () -> Void) {
+        loopRender(textTypes: textTypes, completion: completion)
+    }
 }
 
 private extension ChatTextView {
+    func loopRender(textTypes: [TextType], completion: @escaping () -> Void) {
+        if textTypes.isEmpty {
+            completion()
+            textViewDidChange(self)
+            return
+        }
+
+        var next = textTypes
+        let target = next.removeFirst()
+
+        switch target {
+        case .plain(let value):
+            render(plain: value)
+            loopRender(textTypes: next, completion: completion)
+        case .customEmoji(let value):
+            render(id: UUID().uuidString, customEmoji: value) {
+                self.loopRender(textTypes: next, completion: completion)
+            }
+        case .mention(let value):
+            render(mention: value)
+            loopRender(textTypes: next, completion: completion)
+        }
+    }
+
     func render(mention: TextTypeMention) {
         usedMentions.append(mention)
         let attrString = NSAttributedString(

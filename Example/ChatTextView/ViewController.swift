@@ -141,11 +141,12 @@ extension ViewController: UITableViewDataSource {
             return UITableViewCell()
         }
 
-        guard let label = cell.viewWithTag(10) as? UILabel else {
+        guard let chatTextView = cell.viewWithTag(10) as? ChatTextView else {
             return UITableViewCell()
         }
 
-        label.attributedText = toAttributedString(textTypes: textTypes)
+        chatTextView.clear()
+        chatTextView.render(textTypes: textTypes) {}
         return cell
     }
 
