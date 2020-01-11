@@ -185,7 +185,7 @@ extension ViewController: UITableViewDataSource {
 }
 
 extension ViewController: ChatTextViewDelegate {
-    func didChange(textTypes: [TextType]) {
+    func didChange(textView: ChatTextView, textTypes: [TextType]) {
         print(textTypes)
     }
 }

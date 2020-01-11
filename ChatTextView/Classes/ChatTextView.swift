@@ -8,7 +8,7 @@
 import UIKit
 
 public protocol ChatTextViewDelegate: class {
-    func didChange(textTypes: [TextType])
+    func didChange(textView: ChatTextView, textTypes: [TextType])
 }
 
 public class ChatTextView: UITextView {
@@ -296,7 +296,7 @@ extension ChatTextView: UITextViewDelegate {
         let newFrame = calcLimitedFrame(text: text)
         update(frame: newFrame)
         updateAnimatedGif()
-        self.chatTextViewDelegate?.didChange(textTypes: parsed)
+        self.chatTextViewDelegate?.didChange(textView: self, textTypes: parsed)
     }
 
     public func textView(
