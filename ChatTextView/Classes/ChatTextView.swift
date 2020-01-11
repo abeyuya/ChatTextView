@@ -11,7 +11,7 @@ public protocol ChatTextViewDelegate: class {
     func didChange(textView: ChatTextView, textTypes: [TextType])
 }
 
-public class ChatTextView: UITextView {
+open class ChatTextView: UITextView {
     struct RenderingGifImageView {
         let id: String
         let imageView: UIImageView
