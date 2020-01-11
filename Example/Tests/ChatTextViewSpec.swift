@@ -177,5 +177,36 @@ class ChatTextViewSpec: QuickSpec {
                 expect(stub.callCount).to(equal(3))
             }
         }
+
+        describe("render textTypes") {
+            it("become equal input and output") {
+                let t = ChatTextView()
+
+                let m1 = TextTypeMention(
+                    displayString: "@here",
+                    hiddenString: "<mention: here>"
+                )
+
+                let e = TextTypeCustomEmoji(
+                    displayImageUrl: URL(string: "https://emoji.slack-edge.com/T02DMDKPY/parrot/2c74b5af5aa44406.gif")!,
+                    escapedString: ":hoge:",
+                    size: CGSize(width: 14, height: 14)
+                )
+
+                let textTypes: [TextType] = [
+                    TextType.mention(m1),
+                    TextType.customEmoji(e),
+                    TextType.plain("hello")
+                ]
+
+                waitUntil { done in
+                    t.render(textTypes: textTypes) {
+                        let result = t.getCurrentTextTypes()
+                        expect(result).to(equal(textTypes))
+                        done()
+                    }
+                }
+            }
+        }
     }
 }
