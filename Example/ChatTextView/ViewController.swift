@@ -189,4 +189,8 @@ extension ViewController: ChatTextViewDelegate {
     func didChange(textView: ChatTextView, textTypes: [TextType]) {
         print(textTypes)
     }
+
+    func didChange(textView: ChatTextView, isFocused: Bool) {
+        print(isFocused)
+    }
 }

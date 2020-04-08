@@ -1,5 +1,5 @@
 PODS:
-  - ChatTextView (0.2.0)
+  - ChatTextView (0.4.0)
   - FBSnapshotTestCase (2.1.4):
     - FBSnapshotTestCase/SwiftSupport (= 2.1.4)
   - FBSnapshotTestCase/Core (2.1.4)
@@ -31,7 +31,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ChatTextView: 9b671bc311f6db34e6ff1254c4356fedfe2985b6
+  ChatTextView: 8f0159a2569d0a2e7cbf0751cd998af1c457fde7
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   Mockit: 09492d654a2945096603d76ea77b131bdcfb2233
   Nimble: 4ab1aeb9b45553c75b9687196b0fa0713170a332

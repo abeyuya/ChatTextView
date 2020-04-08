@@ -9,6 +9,7 @@ import UIKit
 
 public protocol ChatTextViewDelegate: class {
     func didChange(textView: ChatTextView, textTypes: [TextType])
+    func didChange(textView: ChatTextView, isFocused: Bool)
 }
 
 open class ChatTextView: UITextView {
@@ -368,6 +369,11 @@ extension ChatTextView: UITextViewDelegate {
             return false
         }
 
+        return true
+    }
+
+    public func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        self.chatTextViewDelegate?.didChange(textView: self, isFocused: true)
         return true
     }
 }

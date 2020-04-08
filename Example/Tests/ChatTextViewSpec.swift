@@ -151,6 +151,9 @@ class ChatTextViewSpec: QuickSpec {
         describe("when delete mention") {
 
             class DelegateStub: Stub, ChatTextViewDelegate {
+                func didChange(textView: ChatTextView, isFocused: Bool) {
+                }
+
                 func didChange(textView: ChatTextView, textTypes: [TextType]) {
                     callCount += 1
                 }
