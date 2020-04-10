@@ -186,6 +186,10 @@ extension ViewController: UITableViewDataSource {
 }
 
 extension ViewController: ChatTextViewDelegate {
+    func didChange(textView: ChatTextView, contentSize: CGSize) {
+        print(contentSize)
+    }
+
     func didChange(textView: ChatTextView, textTypes: [TextType]) {
         print(textTypes)
     }
