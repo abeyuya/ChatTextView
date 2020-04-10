@@ -10,6 +10,7 @@ import UIKit
 public protocol ChatTextViewDelegate: class {
     func didChange(textView: ChatTextView, textTypes: [TextType])
     func didChange(textView: ChatTextView, isFocused: Bool)
+    func didChange(textView: ChatTextView, contentSize: CGSize)
 }
 
 open class ChatTextView: UITextView {
@@ -326,6 +327,7 @@ extension ChatTextView: UITextViewDelegate {
         update(frame: newFrame)
         renderAnimatedGif()
         self.chatTextViewDelegate?.didChange(textView: self, textTypes: parsed)
+        self.chatTextViewDelegate?.didChange(textView: self, contentSize: newFrame.size)
     }
 
     public func textView(
