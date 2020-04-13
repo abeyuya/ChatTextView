@@ -105,7 +105,7 @@ class ViewController: UIViewController {
         let atChannel = UIAlertAction(title: "@channel", style: .default) { _ in
             let mention = TextTypeMention(
                 displayString: "@channel",
-                hiddenString: "@channel"
+                metadata: ""
             )
             self.chatTextView.insert(mention: mention)
         }
@@ -113,7 +113,7 @@ class ViewController: UIViewController {
         let atName = UIAlertAction(title: "@名前", style: .default) { _ in
             let mention = TextTypeMention(
                 displayString: "@名前",
-                hiddenString: "@名前"
+                metadata: ""
             )
             self.chatTextView.insert(mention: mention)
         }

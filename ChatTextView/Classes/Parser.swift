@@ -9,11 +9,11 @@ import Foundation
 
 public struct TextTypeMention: Equatable {
     public let displayString: String
-    public let hiddenString: String
+    public let metadata: String
 
-    public init(displayString: String, hiddenString: String) {
+    public init(displayString: String, metadata: String) {
         self.displayString = displayString
-        self.hiddenString = hiddenString
+        self.metadata = metadata
     }
 }
 
@@ -73,7 +73,7 @@ enum Parser {
             if let mentionId = attr[mentionIdAttrKey] as? String, !mentionId.isEmpty {
                 let m = TextTypeMention(
                     displayString: character,
-                    hiddenString: character
+                    metadata: usedMentions[i].metadata
                 )
                 result.append(TextType.mention(m))
                 continue

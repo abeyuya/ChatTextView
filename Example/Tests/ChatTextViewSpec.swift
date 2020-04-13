@@ -77,8 +77,8 @@ class ChatTextViewSpec: QuickSpec {
             it("has mention") {
                 let t = ChatTextView()
                 let m = TextTypeMention(
-                    displayString: "@here",
-                    hiddenString: "<mention: here>"
+                    displayString: "@channel",
+                    metadata: ""
                 )
                 t.insert(mention: m)
                 let result = t.getCurrentTextTypes()
@@ -96,14 +96,14 @@ class ChatTextViewSpec: QuickSpec {
                 let t = ChatTextView()
 
                 let m1 = TextTypeMention(
-                    displayString: "@here",
-                    hiddenString: "<mention: here>"
+                    displayString: "@channel",
+                    metadata: ""
                 )
                 t.insert(mention: m1)
-
+ 
                 let m2 = TextTypeMention(
                     displayString: "@user_name",
-                    hiddenString: "<mention: user_id>"
+                    metadata: ""
                 )
                 t.insert(mention: m2)
 
@@ -124,14 +124,14 @@ class ChatTextViewSpec: QuickSpec {
                 let t = ChatTextView()
 
                 let m1 = TextTypeMention(
-                    displayString: "@here",
-                    hiddenString: "<mention: here>"
+                    displayString: "@channel",
+                    metadata: ""
                 )
                 t.insert(mention: m1)
 
                 let m2 = TextTypeMention(
                     displayString: "@user_name",
-                    hiddenString: "<mention: user_id>"
+                    metadata: ""
                 )
                 t.insert(mention: m2)
 
@@ -170,8 +170,8 @@ class ChatTextViewSpec: QuickSpec {
                 expect(stub.callCount).to(equal(0))
 
                 let m1 = TextTypeMention(
-                    displayString: "@here",
-                    hiddenString: "<mention: here>"
+                    displayString: "@channel",
+                    metadata: ""
                 )
                 t.insert(mention: m1)
                 expect(stub.callCount).to(equal(1))
@@ -189,8 +189,8 @@ class ChatTextViewSpec: QuickSpec {
                 let t = ChatTextView()
 
                 let m1 = TextTypeMention(
-                    displayString: "@here",
-                    hiddenString: "<mention: here>"
+                    displayString: "@channel",
+                    metadata: ""
                 )
 
                 let e = TextTypeCustomEmoji(
