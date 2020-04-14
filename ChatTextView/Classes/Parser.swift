@@ -73,7 +73,7 @@ enum Parser {
             if let mentionId = attr[mentionIdAttrKey] as? String, !mentionId.isEmpty {
                 let m = TextTypeMention(
                     displayString: character,
-                    metadata: usedMentions[i].metadata
+                    metadata: ""
                 )
                 result.append(TextType.mention(m))
                 continue
