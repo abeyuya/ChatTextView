@@ -29,8 +29,7 @@ class ChatTextViewSpec: QuickSpec {
                 let t = ChatTextView()
                 let e = TextTypeCustomEmoji(
                     displayImageUrl: URL(string: "https://emoji.slack-edge.com/T02DMDKPY/parrot/2c74b5af5aa44406.gif")!,
-                    escapedString: ":hoge:",
-                    size: CGSize(width: 14, height: 14)
+                    escapedString: ":hoge:"
                 )
 
                 waitUntil { done in
@@ -51,8 +50,7 @@ class ChatTextViewSpec: QuickSpec {
 
                 let e = TextTypeCustomEmoji(
                     displayImageUrl: URL(string: "https://emoji.slack-edge.com/T02DMDKPY/parrot/2c74b5af5aa44406.gif")!,
-                    escapedString: ":hoge:",
-                    size: CGSize(width: 14, height: 14)
+                    escapedString: ":hoge:"
                 )
 
                 waitUntil { done in
@@ -195,8 +193,7 @@ class ChatTextViewSpec: QuickSpec {
 
                 let e = TextTypeCustomEmoji(
                     displayImageUrl: URL(string: "https://emoji.slack-edge.com/T02DMDKPY/parrot/2c74b5af5aa44406.gif")!,
-                    escapedString: ":hoge:",
-                    size: CGSize(width: 14, height: 14)
+                    escapedString: ":hoge:"
                 )
 
                 let textTypes: [TextType] = [

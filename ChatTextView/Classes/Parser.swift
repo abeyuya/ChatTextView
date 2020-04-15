@@ -20,12 +20,10 @@ public struct TextTypeMention: Equatable {
 public struct TextTypeCustomEmoji: Hashable {
     public let displayImageUrl: URL
     public let escapedString: String
-    public let size: CGSize
 
-    public init(displayImageUrl: URL, escapedString: String, size: CGSize) {
+    public init(displayImageUrl: URL, escapedString: String) {
         self.displayImageUrl = displayImageUrl
         self.escapedString = escapedString
-        self.size = size
     }
 
     public func hash(into hasher: inout Hasher) {

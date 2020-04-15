@@ -70,8 +70,7 @@ class ViewController: UIViewController {
             let url = URL(string: "https://emoji.slack-edge.com/T02DMDKPY/parrot/2c74b5af5aa44406.gif")!
             let emoji = TextTypeCustomEmoji(
                 displayImageUrl: url,
-                escapedString: ":parrot:",
-                size: .init(width: 14, height: 14)
+                escapedString: ":parrot:"
             )
             self.chatTextView.insert(emoji: emoji) {}
         }
@@ -80,8 +79,7 @@ class ViewController: UIViewController {
             let url = URL(string: "https://emoji.slack-edge.com/T02DMDKPY/octocat/627964d7c9.png")!
             let emoji = TextTypeCustomEmoji(
                 displayImageUrl: url,
-                escapedString: ":octcat:",
-                size: .init(width: 14, height: 14)
+                escapedString: ":octcat:"
             )
             self.chatTextView.insert(emoji: emoji) {}
         }

@@ -20,8 +20,12 @@ open class ChatTextView: UITextView {
     }
 
     // settings
-    var maxHeight: CGFloat?
+    public var fontSize: CGFloat = 17
+    var maxLine: Int = 5
     var defaultTextColor: UIColor = .black
+    var emojiSize: CGSize {
+        return CGSize(width: fontSize, height: fontSize)
+    }
 
     var chatTextViewDelegate: ChatTextViewDelegate?
     var heightLayoutConstraint: NSLayoutConstraint? {
@@ -36,6 +40,7 @@ open class ChatTextView: UITextView {
     public func setup(delegate: ChatTextViewDelegate) {
         self.delegate = self
         self.chatTextViewDelegate = delegate
+        self.font = .systemFont(ofSize: fontSize)
         setEmptyHeight()
     }
 
@@ -110,6 +115,7 @@ private extension ChatTextView {
             string: mention.displayString,
             attributes: [
                 .foregroundColor: UIColor.blue,
+                .font: UIFont.systemFont(ofSize: fontSize),
                 mentionIdAttrKey: UUID().uuidString
             ]
         )
@@ -133,7 +139,9 @@ private extension ChatTextView {
 
         let cursorPosition = currentCursorPosition()
 
-        createAnimatedImage(imageUrl: customEmoji.displayImageUrl) { image in
+        createAnimatedImage(imageUrl: customEmoji.displayImageUrl) { [weak self] image in
+            guard let self = self else { return }
+
             let attarchment = NSTextAttachment()
             if customEmoji.displayImageUrl.pathExtension == "gif" {
                 // render gif image at renderAnimatedGif()
@@ -141,12 +149,13 @@ private extension ChatTextView {
             } else {
                 attarchment.image = image
             }
-            attarchment.bounds = .init(origin: .zero, size: customEmoji.size)
+            attarchment.bounds = .init(origin: .zero, size: self.emojiSize)
             let attr = NSMutableAttributedString(attachment: attarchment)
             attr.addAttributes(
                 [
                     customEmojiImageUrlAttrKey: customEmoji.displayImageUrl.absoluteString,
-                    customEmojiIdAttrKey: id
+                    customEmojiIdAttrKey: id,
+                    .font: UIFont.systemFont(ofSize: self.fontSize)
                 ],
                 range: NSRange(location: 0, length: attr.length)
             )
@@ -159,7 +168,9 @@ private extension ChatTextView {
     }
 
     func render(plain: String) {
-        let attr = NSAttributedString(string: plain)
+        let attr = NSAttributedString(string: plain, attributes: [
+            .font: UIFont.systemFont(ofSize: fontSize)
+        ])
         let origin = NSMutableAttributedString(attributedString: attributedText)
         origin.insert(attr, at: currentCursorPosition())
         attributedText = origin
@@ -173,10 +184,10 @@ private extension ChatTextView {
     func calcLimitedFrame(text: String?) -> CGRect {
         let rawFrame = calcFrame(text: text)
         let height: CGFloat = {
-            if rawFrame.size.height < (maxHeight ?? calcDefaultMaxFrame().size.height) {
+            if rawFrame.size.height < calcDefaultMaxFrame().size.height {
                 return rawFrame.size.height
             }
-            return maxHeight ?? calcDefaultMaxFrame().size.height
+            return calcDefaultMaxFrame().size.height
         }()
 
         var newFrame = rawFrame
@@ -193,7 +204,14 @@ private extension ChatTextView {
             return .zero
         }
 
-        textView.text = text ?? ""
+        let attrText = NSAttributedString(
+            string: text ?? "",
+            attributes: [
+                .font: UIFont.systemFont(ofSize: fontSize)
+            ]
+        )
+
+        textView.attributedText = attrText
         let fixedWidth = textView.frame.size.width
         textView.sizeThatFits(CGSize(
             width: fixedWidth,
@@ -212,7 +230,7 @@ private extension ChatTextView {
     }
 
     func calcDefaultMaxFrame() -> CGRect {
-        return calcFrame(text: "\n\n\n")
+        return calcFrame(text: String(repeating: "\n", count: maxLine - 1))
     }
 
     func update(frame: CGRect) {
@@ -279,8 +297,8 @@ private extension ChatTextView {
 
             guard let selectedTextRange = selectedTextRange else { return }
             var rect = firstRect(for: selectedTextRange)
-            rect.origin.y += (rect.size.height - usingEmoji.size.height)
-            rect.size = usingEmoji.size
+            rect.origin.y += (rect.size.height - fontSize)
+            rect.size = emojiSize
 
             if let v = renderingGifImageViews.first(where: { $0.id == id }) {
                 v.imageView.frame = rect
@@ -315,7 +333,8 @@ private extension NSObject {
 extension ChatTextView: UITextViewDelegate {
     public func textViewDidChange(_ textView: UITextView) {
         textView.typingAttributes = [
-            .foregroundColor: defaultTextColor
+            .foregroundColor: defaultTextColor,
+            .font: UIFont.systemFont(ofSize: fontSize)
         ]
         let parsed = Parser.parse(
             attributedText: textView.attributedText,
