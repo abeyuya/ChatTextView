@@ -341,15 +341,15 @@ extension ChatTextView: UITextViewDelegate {
         update(frame: newFrame)
         renderAnimatedGif()
 
-        DispatchQueue.global().async {
-            let parsed = Parser.parse(
-                attributedText: textView.attributedText,
-                usedEmojis: self.usedEmojis,
-                usedMentions: self.usedMentions
-            )
-            self.chatTextViewDelegate?.didChange(textView: self, textTypes: parsed)
-            self.chatTextViewDelegate?.didChange(textView: self, contentSize: newFrame.size)
-        }
+        guard let tempAttr = textView.attributedText else { return }
+
+        let parsed = Parser.parse(
+            attributedText: tempAttr,
+            usedEmojis: self.usedEmojis,
+            usedMentions: self.usedMentions
+        )
+        self.chatTextViewDelegate?.didChange(textView: self, textTypes: parsed)
+        self.chatTextViewDelegate?.didChange(textView: self, contentSize: newFrame.size)
     }
 
     public func textView(

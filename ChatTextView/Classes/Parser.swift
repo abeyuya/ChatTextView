@@ -50,13 +50,18 @@ enum Parser {
         usedMentions: [TextTypeMention]
     ) -> [TextType] {
         var result: [TextType] = []
+        var allCharacterLength = 0
 
         let string = attributedText.string
         for i in 0..<(string.count) {
             let character = String(Array(string)[i])
+            let characterLength = utf16Length(string: character)
 
-            let lengthIndex = convertToLengthIndex(at: i, attributedString: attributedText)
-            let attr = attributedText.attributes(at: lengthIndex, effectiveRange: nil)
+            defer {
+                allCharacterLength += characterLength
+            }
+
+            let attr = getAttributes(index: allCharacterLength, attributedText: attributedText)
 
             // customEmoji
             if let v = character.utf16.first, v == customEmojiUtf16Value {
@@ -84,23 +89,17 @@ enum Parser {
         return bundle(parsedResult: result, usedMentions: usedMentions)
     }
 
-    private static func convertToLengthIndex(at: Int, attributedString: NSAttributedString) -> Int {
-        let string = attributedString.string
+    private static func getAttributes(
+        index: Int,
+        attributedText: NSAttributedString
+    ) -> [NSAttributedString.Key : Any] {
 
-        let startIndex: Int = {
-            if at == 0 {
-                return 0
-            }
+        let attr = attributedText.attributes(at: index, effectiveRange: nil)
+        return attr
+    }
 
-            var offset = 0
-            for j in 0..<at {
-                let c = String(Array(string)[j])
-                offset += c.utf16.count
-            }
-            return offset
-        }()
-
-        return startIndex
+    private static func utf16Length(string: String) -> Int {
+        return string.utf16.count
     }
 
     private static func bundle(
