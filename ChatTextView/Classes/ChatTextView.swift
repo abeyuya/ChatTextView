@@ -336,17 +336,20 @@ extension ChatTextView: UITextViewDelegate {
             .foregroundColor: defaultTextColor,
             .font: UIFont.systemFont(ofSize: fontSize)
         ]
-        let parsed = Parser.parse(
-            attributedText: textView.attributedText,
-            usedEmojis: usedEmojis,
-            usedMentions: usedMentions
-        )
 
         let newFrame = calcLimitedFrame(text: text)
         update(frame: newFrame)
         renderAnimatedGif()
-        self.chatTextViewDelegate?.didChange(textView: self, textTypes: parsed)
-        self.chatTextViewDelegate?.didChange(textView: self, contentSize: newFrame.size)
+
+        DispatchQueue.global().async {
+            let parsed = Parser.parse(
+                attributedText: textView.attributedText,
+                usedEmojis: self.usedEmojis,
+                usedMentions: self.usedMentions
+            )
+            self.chatTextViewDelegate?.didChange(textView: self, textTypes: parsed)
+            self.chatTextViewDelegate?.didChange(textView: self, contentSize: newFrame.size)
+        }
     }
 
     public func textView(
