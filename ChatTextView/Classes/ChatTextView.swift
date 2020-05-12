@@ -285,7 +285,7 @@ private extension ChatTextView {
         ) { urlString, range, _ in
             guard let u = urlString as? String, let url = URL(string: u) else { return }
             guard url.pathExtension == "gif" else { return }
-            guard let usingEmoji = usedEmojis.first(where: { $0.displayImageUrl.absoluteString == u }) else { return }
+            guard usedEmojis.first(where: { $0.displayImageUrl.absoluteString == u }) != nil else { return }
 
             let attrString = attributedText.attributedSubstring(from: range)
             guard let id = attrString.attribute(customEmojiIdAttrKey, at: 0, effectiveRange: nil) as? String else { return }
