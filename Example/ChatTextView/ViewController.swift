@@ -147,40 +147,6 @@ extension ViewController: UITableViewDataSource {
         chatTextView.render(textBlocks: textBlocks) {}
         return cell
     }
-
-    func toAttributedString(textBlocks: [TextBlock]) -> NSAttributedString {
-        let result = NSMutableAttributedString()
-
-        for t in textBlocks {
-            switch t {
-            case .plain(let string):
-                result.append(NSAttributedString(string: string))
-            case .customEmoji(let value):
-                let attarchment = NSTextAttachment()
-                let image: UIImage? = {
-                    if (value.displayImageUrl.pathExtension == "gif") {
-                        return UIImage.gifImageWithURL(value.displayImageUrl.absoluteString)
-                    }
-                    guard let data = try? Data(contentsOf: value.displayImageUrl) else { return nil }
-                    return UIImage(data: data)
-                }()
-                attarchment.image = image
-                attarchment.bounds = .init(origin: .zero, size: .init(width: 17, height: 17))
-                let attr = NSAttributedString(attachment: attarchment)
-                result.append(attr)
-            case .mention(let value):
-                let attr = NSAttributedString(
-                    string: value.displayString,
-                    attributes: [
-                        NSAttributedString.Key.foregroundColor: UIColor.blue
-                    ]
-                )
-                result.append(attr)
-            }
-        }
-
-        return result
-    }
 }
 
 extension ViewController: ChatTextViewDelegate {
