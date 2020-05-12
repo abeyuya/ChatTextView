@@ -19,7 +19,7 @@ class ChatTextViewSpec: QuickSpec {
                 let t = ChatTextView()
                 t.attributedText = NSAttributedString(string: "hello")
                 let result = t.getCurrentTextTypes()
-                let expectResult: [TextType] = [TextType.plain("hello")]
+                let expectResult: [TextBlock] = [TextBlock.plain("hello")]
                 expect(result).to(equal(expectResult))
             }
         }
@@ -35,7 +35,7 @@ class ChatTextViewSpec: QuickSpec {
                 waitUntil { done in
                     t.insert(emoji: e) {
                         let result = t.getCurrentTextTypes()
-                        let expectResult: [TextType] = [TextType.customEmoji(e)]
+                        let expectResult: [TextBlock] = [TextBlock.customEmoji(e)]
                         expect(result).to(equal(expectResult))
                         done()
                     }
@@ -58,10 +58,10 @@ class ChatTextViewSpec: QuickSpec {
                         t.insert(plain: "world")
 
                         let result = t.getCurrentTextTypes()
-                        let expectResult: [TextType] = [
-                            TextType.plain("hello"),
-                            TextType.customEmoji(e),
-                            TextType.plain("world")
+                        let expectResult: [TextBlock] = [
+                            TextBlock.plain("hello"),
+                            TextBlock.customEmoji(e),
+                            TextBlock.plain("world")
                         ]
 
                         expect(result).to(equal(expectResult))
@@ -80,9 +80,9 @@ class ChatTextViewSpec: QuickSpec {
                 )
                 t.insert(mention: m)
                 let result = t.getCurrentTextTypes()
-                let expectResult: [TextType] = [
-                    TextType.mention(m),
-                    TextType.plain(" ")
+                let expectResult: [TextBlock] = [
+                    TextBlock.mention(m),
+                    TextBlock.plain(" ")
                 ]
 
                 expect(result).to(equal(expectResult))
@@ -106,11 +106,11 @@ class ChatTextViewSpec: QuickSpec {
                 t.insert(mention: m2)
 
                 let result = t.getCurrentTextTypes()
-                let expectResult: [TextType] = [
-                    TextType.mention(m1),
-                    TextType.plain(" "),
-                    TextType.mention(m2),
-                    TextType.plain(" ")
+                let expectResult: [TextBlock] = [
+                    TextBlock.mention(m1),
+                    TextBlock.plain(" "),
+                    TextBlock.mention(m2),
+                    TextBlock.plain(" ")
                 ]
 
                 expect(result).to(equal(expectResult))
@@ -137,9 +137,9 @@ class ChatTextViewSpec: QuickSpec {
                 t.deleteBackward()
 
                 let result = t.getCurrentTextTypes()
-                let expectResult: [TextType] = [
-                    TextType.mention(m1),
-                    TextType.plain(" "),
+                let expectResult: [TextBlock] = [
+                    TextBlock.mention(m1),
+                    TextBlock.plain(" "),
                 ]
 
                 expect(result).to(equal(expectResult))
@@ -155,7 +155,7 @@ class ChatTextViewSpec: QuickSpec {
                 func didChange(textView: ChatTextView, isFocused: Bool) {
                 }
 
-                func didChange(textView: ChatTextView, textTypes: [TextType]) {
+                func didChange(textView: ChatTextView, textTypes: [TextBlock]) {
                     callCount += 1
                 }
             }
@@ -196,10 +196,10 @@ class ChatTextViewSpec: QuickSpec {
                     escapedString: ":hoge:"
                 )
 
-                let textTypes: [TextType] = [
-                    TextType.mention(m1),
-                    TextType.customEmoji(e),
-                    TextType.plain("hello")
+                let textTypes: [TextBlock] = [
+                    TextBlock.mention(m1),
+                    TextBlock.customEmoji(e),
+                    TextBlock.plain("hello")
                 ]
 
                 waitUntil { done in

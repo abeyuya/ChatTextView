@@ -8,7 +8,7 @@
 import UIKit
 
 public protocol ChatTextViewDelegate: class {
-    func didChange(textView: ChatTextView, textTypes: [TextType])
+    func didChange(textView: ChatTextView, textTypes: [TextBlock])
     func didChange(textView: ChatTextView, isFocused: Bool)
     func didChange(textView: ChatTextView, contentSize: CGSize)
 }
@@ -61,7 +61,7 @@ open class ChatTextView: UITextView {
         textViewDidChange(self)
     }
 
-    public func getCurrentTextTypes() -> [TextType] {
+    public func getCurrentTextTypes() -> [TextBlock] {
         let parsed = Parser.parse(
             attributedText: attributedText,
             usedEmojis: usedEmojis,
@@ -79,13 +79,13 @@ open class ChatTextView: UITextView {
         usedMentions = []
     }
 
-    public func render(textTypes: [TextType], completion: @escaping () -> Void) {
+    public func render(textTypes: [TextBlock], completion: @escaping () -> Void) {
         loopRender(textTypes: textTypes, completion: completion)
     }
 }
 
 private extension ChatTextView {
-    func loopRender(textTypes: [TextType], completion: @escaping () -> Void) {
+    func loopRender(textTypes: [TextBlock], completion: @escaping () -> Void) {
         if textTypes.isEmpty {
             completion()
             textViewDidChange(self)

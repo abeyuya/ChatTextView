@@ -31,7 +31,7 @@ public struct TextTypeCustomEmoji: Hashable {
     }
 }
 
-public enum TextType: Equatable {
+public enum TextBlock: Equatable {
     case plain(String)
     case mention(TextTypeMention)
     case customEmoji(TextTypeCustomEmoji)
@@ -48,8 +48,8 @@ enum Parser {
         attributedText: NSAttributedString,
         usedEmojis: [TextTypeCustomEmoji],
         usedMentions: [TextTypeMention]
-    ) -> [TextType] {
-        var result: [TextType] = []
+    ) -> [TextBlock] {
+        var result: [TextBlock] = []
         var allCharacterLength = 0
 
         let string = attributedText.string
@@ -67,7 +67,7 @@ enum Parser {
             if let v = character.utf16.first, v == customEmojiUtf16Value {
                 if let emojiImageUrl = attr[customEmojiImageUrlAttrKey] as? String,
                     let usedEmoji = usedEmojis.first(where: { $0.displayImageUrl.absoluteString == emojiImageUrl }) {
-                    result.append(TextType.customEmoji(usedEmoji))
+                    result.append(TextBlock.customEmoji(usedEmoji))
                 }
                 continue
             }
@@ -78,12 +78,12 @@ enum Parser {
                     displayString: character,
                     metadata: ""
                 )
-                result.append(TextType.mention(m))
+                result.append(TextBlock.mention(m))
                 continue
             }
 
             // plain
-            result.append(TextType.plain(character))
+            result.append(TextBlock.plain(character))
         }
 
         return bundle(parsedResult: result, usedMentions: usedMentions)
@@ -103,23 +103,23 @@ enum Parser {
     }
 
     private static func bundle(
-        parsedResult: [TextType],
+        parsedResult: [TextBlock],
         usedMentions: [TextTypeMention]
-    ) -> [TextType] {
-        var result: [TextType] = []
-        var prev: TextType?
+    ) -> [TextBlock] {
+        var result: [TextBlock] = []
+        var prev: TextBlock?
         var bundlingPlain: String?
         var bundlingMention: String?
 
         let insertBundlingPlain = {
             guard let b = bundlingPlain else { return }
-            result.append(TextType.plain(b))
+            result.append(TextBlock.plain(b))
             bundlingPlain = nil
         }
         let insertBundlingMention = {
             guard let b = bundlingMention else { return }
             guard let usedMention = usedMentions.first(where: { $0.displayString == b }) else { return }
-            result.append(TextType.mention(usedMention))
+            result.append(TextBlock.mention(usedMention))
             bundlingMention = nil
         }
 

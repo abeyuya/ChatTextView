@@ -32,7 +32,7 @@ class ViewController: UIViewController {
     }
 
     private let underKeyboardLayoutConstraint = UnderKeyboardLayoutConstraint()
-    private var sendTextTypes: [[TextType]] = []
+    private var sendTextTypes: [[TextBlock]] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -148,7 +148,7 @@ extension ViewController: UITableViewDataSource {
         return cell
     }
 
-    func toAttributedString(textTypes: [TextType]) -> NSAttributedString {
+    func toAttributedString(textTypes: [TextBlock]) -> NSAttributedString {
         let result = NSMutableAttributedString()
 
         for t in textTypes {
@@ -188,7 +188,7 @@ extension ViewController: ChatTextViewDelegate {
         print(contentSize)
     }
 
-    func didChange(textView: ChatTextView, textTypes: [TextType]) {
+    func didChange(textView: ChatTextView, textTypes: [TextBlock]) {
         print(textTypes)
     }
 
