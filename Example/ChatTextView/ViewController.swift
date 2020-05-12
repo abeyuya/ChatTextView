@@ -32,7 +32,7 @@ class ViewController: UIViewController {
     }
 
     private let underKeyboardLayoutConstraint = UnderKeyboardLayoutConstraint()
-    private var sendTextTypes: [[TextType]] = []
+    private var sendTextBlocks: [[TextBlock]] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,8 +50,8 @@ class ViewController: UIViewController {
 
     @objc
     func didTapSendButton() {
-        let textTypes = chatTextView.getCurrentTextTypes()
-        sendTextTypes.append(textTypes)
+        let textBlocks = chatTextView.getCurrentTextBlocks()
+        sendTextBlocks.append(textBlocks)
         tableView.reloadData()
 
         chatTextView.clear()
@@ -68,7 +68,7 @@ class ViewController: UIViewController {
 
         let parrot = UIAlertAction(title: "parrot (gif)", style: .default) { _ in
             let url = URL(string: "https://emoji.slack-edge.com/T02DMDKPY/parrot/2c74b5af5aa44406.gif")!
-            let emoji = TextTypeCustomEmoji(
+            let emoji = TextBlockCustomEmoji(
                 displayImageUrl: url,
                 escapedString: ":parrot:"
             )
@@ -77,7 +77,7 @@ class ViewController: UIViewController {
 
         let octcat = UIAlertAction(title: "octcat (png)", style: .default) { _ in
             let url = URL(string: "https://emoji.slack-edge.com/T02DMDKPY/octocat/627964d7c9.png")!
-            let emoji = TextTypeCustomEmoji(
+            let emoji = TextBlockCustomEmoji(
                 displayImageUrl: url,
                 escapedString: ":octcat:"
             )
@@ -101,7 +101,7 @@ class ViewController: UIViewController {
         )
 
         let atChannel = UIAlertAction(title: "@channel", style: .default) { _ in
-            let mention = TextTypeMention(
+            let mention = TextBlockMention(
                 displayString: "@channel",
                 metadata: ""
             )
@@ -109,7 +109,7 @@ class ViewController: UIViewController {
         }
 
         let atName = UIAlertAction(title: "@名前", style: .default) { _ in
-            let mention = TextTypeMention(
+            let mention = TextBlockMention(
                 displayString: "@名前",
                 metadata: ""
             )
@@ -129,11 +129,11 @@ extension ViewController: UITableViewDelegate {}
 
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sendTextTypes.count
+        return sendTextBlocks.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let textTypes = sendTextTypes[indexPath.row]
+        let textBlocks = sendTextBlocks[indexPath.row]
 
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") else {
             return UITableViewCell()
@@ -144,42 +144,8 @@ extension ViewController: UITableViewDataSource {
         }
 
         chatTextView.clear()
-        chatTextView.render(textTypes: textTypes) {}
+        chatTextView.render(textBlocks: textBlocks) {}
         return cell
-    }
-
-    func toAttributedString(textTypes: [TextType]) -> NSAttributedString {
-        let result = NSMutableAttributedString()
-
-        for t in textTypes {
-            switch t {
-            case .plain(let string):
-                result.append(NSAttributedString(string: string))
-            case .customEmoji(let value):
-                let attarchment = NSTextAttachment()
-                let image: UIImage? = {
-                    if (value.displayImageUrl.pathExtension == "gif") {
-                        return UIImage.gifImageWithURL(value.displayImageUrl.absoluteString)
-                    }
-                    guard let data = try? Data(contentsOf: value.displayImageUrl) else { return nil }
-                    return UIImage(data: data)
-                }()
-                attarchment.image = image
-                attarchment.bounds = .init(origin: .zero, size: .init(width: 17, height: 17))
-                let attr = NSAttributedString(attachment: attarchment)
-                result.append(attr)
-            case .mention(let value):
-                let attr = NSAttributedString(
-                    string: value.displayString,
-                    attributes: [
-                        NSAttributedString.Key.foregroundColor: UIColor.blue
-                    ]
-                )
-                result.append(attr)
-            }
-        }
-
-        return result
     }
 }
 
@@ -188,8 +154,8 @@ extension ViewController: ChatTextViewDelegate {
         print(contentSize)
     }
 
-    func didChange(textView: ChatTextView, textTypes: [TextType]) {
-        print(textTypes)
+    func didChange(textView: ChatTextView, textBlocks: [TextBlock]) {
+        print(textBlocks)
     }
 
     func didChange(textView: ChatTextView, isFocused: Bool) {
