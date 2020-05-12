@@ -18,7 +18,7 @@ class ChatTextViewSpec: QuickSpec {
             it("has only plain text") {
                 let t = ChatTextView()
                 t.attributedText = NSAttributedString(string: "hello")
-                let result = t.getCurrentTextTypes()
+                let result = t.getCurrentTextBlocks()
                 let expectResult: [TextBlock] = [TextBlock.plain("hello")]
                 expect(result).to(equal(expectResult))
             }
@@ -27,14 +27,14 @@ class ChatTextViewSpec: QuickSpec {
         describe("input only custom emoji") {
             it("has only custom emoji") {
                 let t = ChatTextView()
-                let e = TextTypeCustomEmoji(
+                let e = TextBlockCustomEmoji(
                     displayImageUrl: URL(string: "https://emoji.slack-edge.com/T02DMDKPY/parrot/2c74b5af5aa44406.gif")!,
                     escapedString: ":hoge:"
                 )
 
                 waitUntil { done in
                     t.insert(emoji: e) {
-                        let result = t.getCurrentTextTypes()
+                        let result = t.getCurrentTextBlocks()
                         let expectResult: [TextBlock] = [TextBlock.customEmoji(e)]
                         expect(result).to(equal(expectResult))
                         done()
@@ -48,7 +48,7 @@ class ChatTextViewSpec: QuickSpec {
                 let t = ChatTextView()
                 t.attributedText = NSAttributedString(string: "hello")
 
-                let e = TextTypeCustomEmoji(
+                let e = TextBlockCustomEmoji(
                     displayImageUrl: URL(string: "https://emoji.slack-edge.com/T02DMDKPY/parrot/2c74b5af5aa44406.gif")!,
                     escapedString: ":hoge:"
                 )
@@ -57,7 +57,7 @@ class ChatTextViewSpec: QuickSpec {
                     t.insert(emoji: e) {
                         t.insert(plain: "world")
 
-                        let result = t.getCurrentTextTypes()
+                        let result = t.getCurrentTextBlocks()
                         let expectResult: [TextBlock] = [
                             TextBlock.plain("hello"),
                             TextBlock.customEmoji(e),
@@ -74,12 +74,12 @@ class ChatTextViewSpec: QuickSpec {
         describe("input only mention") {
             it("has mention") {
                 let t = ChatTextView()
-                let m = TextTypeMention(
+                let m = TextBlockMention(
                     displayString: "@channel",
                     metadata: ""
                 )
                 t.insert(mention: m)
-                let result = t.getCurrentTextTypes()
+                let result = t.getCurrentTextBlocks()
                 let expectResult: [TextBlock] = [
                     TextBlock.mention(m),
                     TextBlock.plain(" ")
@@ -93,19 +93,19 @@ class ChatTextViewSpec: QuickSpec {
             it("has many mention") {
                 let t = ChatTextView()
 
-                let m1 = TextTypeMention(
+                let m1 = TextBlockMention(
                     displayString: "@channel",
                     metadata: ""
                 )
                 t.insert(mention: m1)
  
-                let m2 = TextTypeMention(
+                let m2 = TextBlockMention(
                     displayString: "@user_name",
                     metadata: ""
                 )
                 t.insert(mention: m2)
 
-                let result = t.getCurrentTextTypes()
+                let result = t.getCurrentTextBlocks()
                 let expectResult: [TextBlock] = [
                     TextBlock.mention(m1),
                     TextBlock.plain(" "),
@@ -121,13 +121,13 @@ class ChatTextViewSpec: QuickSpec {
             it("remove mention") {
                 let t = ChatTextView()
 
-                let m1 = TextTypeMention(
+                let m1 = TextBlockMention(
                     displayString: "@channel",
                     metadata: ""
                 )
                 t.insert(mention: m1)
 
-                let m2 = TextTypeMention(
+                let m2 = TextBlockMention(
                     displayString: "@user_name",
                     metadata: ""
                 )
@@ -136,7 +136,7 @@ class ChatTextViewSpec: QuickSpec {
                 t.deleteBackward()
                 t.deleteBackward()
 
-                let result = t.getCurrentTextTypes()
+                let result = t.getCurrentTextBlocks()
                 let expectResult: [TextBlock] = [
                     TextBlock.mention(m1),
                     TextBlock.plain(" "),
@@ -155,7 +155,7 @@ class ChatTextViewSpec: QuickSpec {
                 func didChange(textView: ChatTextView, isFocused: Bool) {
                 }
 
-                func didChange(textView: ChatTextView, textTypes: [TextBlock]) {
+                func didChange(textView: ChatTextView, textBlocks: [TextBlock]) {
                     callCount += 1
                 }
             }
@@ -167,7 +167,7 @@ class ChatTextViewSpec: QuickSpec {
                 t.setup(delegate: stub)
                 expect(stub.callCount).to(equal(0))
 
-                let m1 = TextTypeMention(
+                let m1 = TextBlockMention(
                     displayString: "@channel",
                     metadata: ""
                 )
@@ -182,30 +182,30 @@ class ChatTextViewSpec: QuickSpec {
             }
         }
 
-        describe("render textTypes") {
+        describe("render textBlocks") {
             it("become equal input and output") {
                 let t = ChatTextView()
 
-                let m1 = TextTypeMention(
+                let m1 = TextBlockMention(
                     displayString: "@channel",
                     metadata: ""
                 )
 
-                let e = TextTypeCustomEmoji(
+                let e = TextBlockCustomEmoji(
                     displayImageUrl: URL(string: "https://emoji.slack-edge.com/T02DMDKPY/parrot/2c74b5af5aa44406.gif")!,
                     escapedString: ":hoge:"
                 )
 
-                let textTypes: [TextBlock] = [
+                let textBlocks: [TextBlock] = [
                     TextBlock.mention(m1),
                     TextBlock.customEmoji(e),
                     TextBlock.plain("hello")
                 ]
 
                 waitUntil { done in
-                    t.render(textTypes: textTypes) {
-                        let result = t.getCurrentTextTypes()
-                        expect(result).to(equal(textTypes))
+                    t.render(textBlocks: textBlocks) {
+                        let result = t.getCurrentTextBlocks()
+                        expect(result).to(equal(textBlocks))
                         done()
                     }
                 }

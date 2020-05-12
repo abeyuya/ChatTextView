@@ -8,7 +8,7 @@
 import UIKit
 
 public protocol ChatTextViewDelegate: class {
-    func didChange(textView: ChatTextView, textTypes: [TextBlock])
+    func didChange(textView: ChatTextView, textBlocks: [TextBlock])
     func didChange(textView: ChatTextView, isFocused: Bool)
     func didChange(textView: ChatTextView, contentSize: CGSize)
 }
@@ -33,8 +33,8 @@ open class ChatTextView: UITextView {
             return c.firstAttribute == .height
         }
     }
-    var usedEmojis: [TextTypeCustomEmoji] = []
-    var usedMentions: [TextTypeMention] = []
+    var usedEmojis: [TextBlockCustomEmoji] = []
+    var usedMentions: [TextBlockMention] = []
     var renderingGifImageViews: [RenderingGifImageView] = []
 
     public func setup(delegate: ChatTextViewDelegate) {
@@ -44,14 +44,14 @@ open class ChatTextView: UITextView {
         setEmptyHeight()
     }
 
-    public func insert(emoji: TextTypeCustomEmoji, completion: @escaping () -> Void) {
+    public func insert(emoji: TextBlockCustomEmoji, completion: @escaping () -> Void) {
         render(id: UUID().uuidString, customEmoji: emoji) {
             self.textViewDidChange(self)
             completion()
         }
     }
 
-    public func insert(mention: TextTypeMention) {
+    public func insert(mention: TextBlockMention) {
         render(mention: mention)
         insert(plain: " ")
     }
@@ -61,7 +61,7 @@ open class ChatTextView: UITextView {
         textViewDidChange(self)
     }
 
-    public func getCurrentTextTypes() -> [TextBlock] {
+    public func getCurrentTextBlocks() -> [TextBlock] {
         let parsed = Parser.parse(
             attributedText: attributedText,
             usedEmojis: usedEmojis,
@@ -79,37 +79,37 @@ open class ChatTextView: UITextView {
         usedMentions = []
     }
 
-    public func render(textTypes: [TextBlock], completion: @escaping () -> Void) {
-        loopRender(textTypes: textTypes, completion: completion)
+    public func render(textBlocks: [TextBlock], completion: @escaping () -> Void) {
+        loopRender(textBlocks: textBlocks, completion: completion)
     }
 }
 
 private extension ChatTextView {
-    func loopRender(textTypes: [TextBlock], completion: @escaping () -> Void) {
-        if textTypes.isEmpty {
+    func loopRender(textBlocks: [TextBlock], completion: @escaping () -> Void) {
+        if textBlocks.isEmpty {
             completion()
             textViewDidChange(self)
             return
         }
 
-        var next = textTypes
+        var next = textBlocks
         let target = next.removeFirst()
 
         switch target {
         case .plain(let value):
             render(plain: value)
-            loopRender(textTypes: next, completion: completion)
+            loopRender(textBlocks: next, completion: completion)
         case .customEmoji(let value):
             render(id: UUID().uuidString, customEmoji: value) {
-                self.loopRender(textTypes: next, completion: completion)
+                self.loopRender(textBlocks: next, completion: completion)
             }
         case .mention(let value):
             render(mention: value)
-            loopRender(textTypes: next, completion: completion)
+            loopRender(textBlocks: next, completion: completion)
         }
     }
 
-    func render(mention: TextTypeMention) {
+    func render(mention: TextBlockMention) {
         usedMentions.append(mention)
         let attrString = NSAttributedString(
             string: mention.displayString,
@@ -127,7 +127,7 @@ private extension ChatTextView {
 
     func render(
         id: String,
-        customEmoji: TextTypeCustomEmoji,
+        customEmoji: TextBlockCustomEmoji,
         completion: @escaping () -> Void
     ) {
         usedEmojis.append(customEmoji)
@@ -348,7 +348,7 @@ extension ChatTextView: UITextViewDelegate {
             usedEmojis: self.usedEmojis,
             usedMentions: self.usedMentions
         )
-        self.chatTextViewDelegate?.didChange(textView: self, textTypes: parsed)
+        self.chatTextViewDelegate?.didChange(textView: self, textBlocks: parsed)
         self.chatTextViewDelegate?.didChange(textView: self, contentSize: newFrame.size)
     }
 

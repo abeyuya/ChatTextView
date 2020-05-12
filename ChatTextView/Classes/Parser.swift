@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct TextTypeMention: Equatable {
+public struct TextBlockMention: Equatable {
     public let displayString: String
     public let metadata: String
 
@@ -17,7 +17,7 @@ public struct TextTypeMention: Equatable {
     }
 }
 
-public struct TextTypeCustomEmoji: Hashable {
+public struct TextBlockCustomEmoji: Hashable {
     public let displayImageUrl: URL
     public let escapedString: String
 
@@ -33,8 +33,8 @@ public struct TextTypeCustomEmoji: Hashable {
 
 public enum TextBlock: Equatable {
     case plain(String)
-    case mention(TextTypeMention)
-    case customEmoji(TextTypeCustomEmoji)
+    case mention(TextBlockMention)
+    case customEmoji(TextBlockCustomEmoji)
 }
 
 private let customEmojiUtf16Value = 65532
@@ -46,8 +46,8 @@ internal let mentionIdAttrKey = NSAttributedString.Key(rawValue: "mentionId")
 enum Parser {
     static func parse(
         attributedText: NSAttributedString,
-        usedEmojis: [TextTypeCustomEmoji],
-        usedMentions: [TextTypeMention]
+        usedEmojis: [TextBlockCustomEmoji],
+        usedMentions: [TextBlockMention]
     ) -> [TextBlock] {
         var result: [TextBlock] = []
         var allCharacterLength = 0
@@ -74,7 +74,7 @@ enum Parser {
 
             // mention
             if let mentionId = attr[mentionIdAttrKey] as? String, !mentionId.isEmpty {
-                let m = TextTypeMention(
+                let m = TextBlockMention(
                     displayString: character,
                     metadata: ""
                 )
@@ -104,7 +104,7 @@ enum Parser {
 
     private static func bundle(
         parsedResult: [TextBlock],
-        usedMentions: [TextTypeMention]
+        usedMentions: [TextBlockMention]
     ) -> [TextBlock] {
         var result: [TextBlock] = []
         var prev: TextBlock?
