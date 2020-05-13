@@ -12,6 +12,18 @@ import Nimble
 import Mockit
 import ChatTextView
 
+class DelegateStub: Stub, ChatTextViewDelegate {
+    func didChange(textView: ChatTextView, contentSize: CGSize) {
+    }
+
+    func didChange(textView: ChatTextView, isFocused: Bool) {
+    }
+
+    func didChange(textView: ChatTextView, textBlocks: [TextBlock]) {
+        callCount += 1
+    }
+}
+
 class ChatTextViewSpec: QuickSpec {
     override func spec() {
         describe("input only plain text") {
@@ -147,19 +159,6 @@ class ChatTextViewSpec: QuickSpec {
         }
 
         describe("when delete mention") {
-
-            class DelegateStub: Stub, ChatTextViewDelegate {
-                func didChange(textView: ChatTextView, contentSize: CGSize) {
-                }
-
-                func didChange(textView: ChatTextView, isFocused: Bool) {
-                }
-
-                func didChange(textView: ChatTextView, textBlocks: [TextBlock]) {
-                    callCount += 1
-                }
-            }
-
             it("call delegate correctly") {
                 let t = ChatTextView()
                 let stub = DelegateStub()
@@ -179,6 +178,35 @@ class ChatTextViewSpec: QuickSpec {
 
                 t.deleteBackward()
                 expect(stub.callCount).to(equal(3))
+            }
+        }
+
+        describe("when insert text in mention-block") {
+            it("should delete mention-block and remain input text") {
+                let t = ChatTextView()
+                let stub = DelegateStub()
+
+                t.setup(delegate: stub)
+                expect(stub.callCount).to(equal(0))
+
+                let m1 = TextBlockMention(
+                    displayString: "@channel",
+                    metadata: ""
+                )
+                t.insert(mention: m1)
+                expect(stub.callCount).to(equal(1))
+
+                t.insertWithIndex(plain: "insert", at: 3)
+                expect(stub.callCount).to(equal(2))
+
+                let textBlocks = t.getCurrentTextBlocks()
+                expect(textBlocks).to(equal([.plain("insert"), .plain(" ")]))
+
+                //
+                // TODO: simulate insert text in mention-block
+                //
+                // let visibleString = t.attributedText.string
+                // expect(visibleString).to(equal("insert "))
             }
         }
 

@@ -57,7 +57,12 @@ open class ChatTextView: UITextView {
     }
 
     public func insert(plain: String) {
-        render(plain: plain)
+        render(plain: plain, at: nil)
+        textViewDidChange(self)
+    }
+
+    public func insertWithIndex(plain: String, at: Int) {
+        render(plain: plain, at: at)
         textViewDidChange(self)
     }
 
@@ -97,7 +102,7 @@ private extension ChatTextView {
 
         switch target {
         case .plain(let value):
-            render(plain: value)
+            render(plain: value, at: nil)
             loopRender(textBlocks: next, completion: completion)
         case .customEmoji(let value):
             render(id: UUID().uuidString, customEmoji: value) {
@@ -167,12 +172,12 @@ private extension ChatTextView {
         }
     }
 
-    func render(plain: String) {
+    func render(plain: String, at: Int?) {
         let attr = NSAttributedString(string: plain, attributes: [
             .font: UIFont.systemFont(ofSize: fontSize)
         ])
         let origin = NSMutableAttributedString(attributedString: attributedText)
-        origin.insert(attr, at: currentCursorPosition())
+        origin.insert(attr, at: at ?? currentCursorPosition())
         attributedText = origin
     }
 
@@ -357,7 +362,101 @@ extension ChatTextView: UITextViewDelegate {
         shouldChangeTextIn range: NSRange,
         replacementText text: String
     ) -> Bool {
-        guard text.isEmpty else { return true }
+        defer {
+            textViewDidChange(textView)
+        }
+
+        if text.isEmpty {
+            return handleDeleteText(textView: textView, shouldChangeTextIn: range)
+        }
+
+        return handleInsertOrReplaceText(
+            textView: textView,
+            shouldChangeTextIn: range,
+            replacementText: text
+        )
+    }
+
+    public func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        self.chatTextViewDelegate?.didChange(textView: self, isFocused: true)
+        return true
+    }
+
+    // remove mention-block if text inserted in mention-block
+    private func handleInsertOrReplaceText(
+        textView: UITextView,
+        shouldChangeTextIn range: NSRange,
+        replacementText text: String
+    ) -> Bool {
+        let prevFullRange = NSRange(location: 0, length: textView.attributedText.length)
+
+        let beforeRange = NSRange(location: max(range.location - 1, 0), length: 1)
+        let beforeRangeCheck = NSIntersectionRange(prevFullRange, beforeRange)
+        if (beforeRangeCheck.length == 0) {
+            // invalid beforeRange
+            return true
+        }
+
+        let beforeAttrText = textView.attributedText.attributedSubstring(from: beforeRange)
+        let beforeTargetMentionId = getMentionId(attrText: beforeAttrText)
+
+        let afterRange = NSRange(location: range.location + range.length + 1, length: 1)
+        let afterRangeCheck = NSIntersectionRange(prevFullRange, afterRange)
+        if (afterRangeCheck.length == 0) {
+            // invalid afterRange
+            return true
+        }
+
+        let afterAttrText = textView.attributedText.attributedSubstring(from: afterRange)
+        let afterTargetMentionId = getMentionId(attrText: afterAttrText)
+
+        if let b = beforeTargetMentionId,
+            let a = afterTargetMentionId,
+            b == a
+        {
+            guard let deletedRange = deleteMentionAttributedString(textView: textView, targetMentionId: a) else {
+                return true
+            }
+
+            insertWithIndex(plain: text, at: deletedRange.location)
+            return false
+        }
+
+        return true
+    }
+
+    private func getMentionId(attrText: NSAttributedString) -> String? {
+        guard let targetMentionId = attrText.attribute(mentionIdAttrKey, at: 0, effectiveRange: nil) as? String else { return nil }
+
+        return targetMentionId
+    }
+
+    private func deleteMentionAttributedString(
+        textView: UITextView,
+        targetMentionId: String
+    ) -> NSRange? {
+        var deletedMentionBlockRange: NSRange? = nil
+
+        textView.attributedText.enumerateAttribute(
+            mentionIdAttrKey,
+            in: NSRange(location: 0, length: textView.attributedText.length),
+            options: []
+        ) { mentionId, range, _ in
+            guard let mentionId = mentionId as? String else { return }
+            guard mentionId == targetMentionId else { return }
+            let mu = NSMutableAttributedString(attributedString: textView.attributedText)
+            mu.deleteCharacters(in: range)
+            textView.attributedText = mu
+            deletedMentionBlockRange = range
+        }
+
+        return deletedMentionBlockRange
+    }
+
+    private func handleDeleteText(
+        textView: UITextView,
+        shouldChangeTextIn range: NSRange
+    ) -> Bool {
         let attrText = textView.attributedText.attributedSubstring(from: range)
 
         if attrText.string.isEmpty {
@@ -377,27 +476,11 @@ extension ChatTextView: UITextViewDelegate {
         }
 
         // delete mention
-        if let targetMentionId = attrText.attribute(mentionIdAttrKey, at: 0, effectiveRange: nil) as? String, !targetMentionId.isEmpty {
-            textView.attributedText.enumerateAttribute(
-                mentionIdAttrKey,
-                in: NSRange(location: 0, length: textView.attributedText.length),
-                options: []
-            ) { mentionId, range, _ in
-                guard let mentionId = mentionId as? String else { return }
-                guard mentionId == targetMentionId else { return }
-                let mu = NSMutableAttributedString(attributedString: textView.attributedText)
-                mu.deleteCharacters(in: range)
-                textView.attributedText = mu
-                textViewDidChange(textView)
-            }
+        if let targetMentionId = getMentionId(attrText: attrText) {
+            _ = deleteMentionAttributedString(textView: textView, targetMentionId: targetMentionId)
             return false
         }
 
-        return true
-    }
-
-    public func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        self.chatTextViewDelegate?.didChange(textView: self, isFocused: true)
         return true
     }
 }
