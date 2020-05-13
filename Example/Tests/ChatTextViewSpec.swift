@@ -210,6 +210,39 @@ class ChatTextViewSpec: QuickSpec {
             }
         }
 
+        describe("when insert text immediately before mention-block") {
+            it("remain insert text and mention-block") {
+                let t = ChatTextView()
+                let stub = DelegateStub()
+
+                t.setup(delegate: stub)
+                expect(stub.callCount).to(equal(0))
+
+                let m1 = TextBlockMention(
+                    displayString: "@channel",
+                    metadata: ""
+                )
+                t.insert(mention: m1)
+                expect(stub.callCount).to(equal(1))
+
+                t.insertWithIndex(plain: "insert", at: 0)
+                expect(stub.callCount).to(equal(2))
+
+                let textBlocks = t.getCurrentTextBlocks()
+                expect(textBlocks).to(equal([
+                    .plain("insert"),
+                    .mention(m1),
+                    .plain(" ")
+                ]))
+
+                //
+                // TODO: simulate insert text in mention-block
+                //
+                // let visibleString = t.attributedText.string
+                // expect(visibleString).to(equal("insert "))
+            }
+        }
+
         describe("render textBlocks") {
             it("become equal input and output") {
                 let t = ChatTextView()
