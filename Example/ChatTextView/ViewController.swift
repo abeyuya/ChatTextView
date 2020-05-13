@@ -151,14 +151,14 @@ extension ViewController: UITableViewDataSource {
 
 extension ViewController: ChatTextViewDelegate {
     func didChange(textView: ChatTextView, contentSize: CGSize) {
-        print(contentSize)
+        print("didChange(textView: ChatTextView, contentSize: CGSize)", contentSize)
     }
 
     func didChange(textView: ChatTextView, textBlocks: [TextBlock]) {
-        print(textBlocks)
+        print("didChange(textView: ChatTextView, textBlocks: [TextBlocks])", textBlocks)
     }
 
     func didChange(textView: ChatTextView, isFocused: Bool) {
-        print(isFocused)
+        print("didChange(textView: ChatTextView, isFocused: Bool)", isFocused)
     }
 }

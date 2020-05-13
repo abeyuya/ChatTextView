@@ -57,7 +57,12 @@ open class ChatTextView: UITextView {
     }
 
     public func insert(plain: String) {
-        render(plain: plain)
+        render(plain: plain, at: nil)
+        textViewDidChange(self)
+    }
+
+    public func insertWithIndex(plain: String, at: Int) {
+        render(plain: plain, at: at)
         textViewDidChange(self)
     }
 
@@ -97,7 +102,7 @@ private extension ChatTextView {
 
         switch target {
         case .plain(let value):
-            render(plain: value)
+            render(plain: value, at: nil)
             loopRender(textBlocks: next, completion: completion)
         case .customEmoji(let value):
             render(id: UUID().uuidString, customEmoji: value) {
@@ -167,12 +172,12 @@ private extension ChatTextView {
         }
     }
 
-    func render(plain: String) {
+    func render(plain: String, at: Int?) {
         let attr = NSAttributedString(string: plain, attributes: [
             .font: UIFont.systemFont(ofSize: fontSize)
         ])
         let origin = NSMutableAttributedString(attributedString: attributedText)
-        origin.insert(attr, at: currentCursorPosition())
+        origin.insert(attr, at: at ?? currentCursorPosition())
         attributedText = origin
     }
 
@@ -357,7 +362,35 @@ extension ChatTextView: UITextViewDelegate {
         shouldChangeTextIn range: NSRange,
         replacementText text: String
     ) -> Bool {
-        guard text.isEmpty else { return true }
+        if text.isEmpty {
+            return handleDeleteText(textView: textView, shouldChangeTextIn: range)
+        }
+
+        return handleInsertText(
+            textView: textView,
+            shouldChangeTextIn: range,
+            replacementText: text
+        )
+    }
+
+    public func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        self.chatTextViewDelegate?.didChange(textView: self, isFocused: true)
+        return true
+    }
+
+    private func handleInsertText(
+        textView: UITextView,
+        shouldChangeTextIn range: NSRange,
+        replacementText text: String
+    ) -> Bool {
+        let attrText = textView.attributedText.attributedSubstring(from: range)
+        return true
+    }
+
+    private func handleDeleteText(
+        textView: UITextView,
+        shouldChangeTextIn range: NSRange
+    ) -> Bool {
         let attrText = textView.attributedText.attributedSubstring(from: range)
 
         if attrText.string.isEmpty {
@@ -393,11 +426,6 @@ extension ChatTextView: UITextViewDelegate {
             return false
         }
 
-        return true
-    }
-
-    public func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        self.chatTextViewDelegate?.didChange(textView: self, isFocused: true)
         return true
     }
 }
