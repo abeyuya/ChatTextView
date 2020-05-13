@@ -419,6 +419,7 @@ extension ChatTextView: UITextViewDelegate {
             }
 
             insertWithIndex(plain: text, at: deletedRange.location)
+            selectedRange = NSRange(location: deletedRange.location + text.count, length: 0)
             return false
         }
 
@@ -435,7 +436,7 @@ extension ChatTextView: UITextViewDelegate {
         textView: UITextView,
         targetMentionId: String
     ) -> NSRange? {
-        var deletedMentionBlockRange: NSRange? = nil
+        var firstDeletedMentionBlockRange: NSRange? = nil
 
         textView.attributedText.enumerateAttribute(
             mentionIdAttrKey,
@@ -447,10 +448,13 @@ extension ChatTextView: UITextViewDelegate {
             let mu = NSMutableAttributedString(attributedString: textView.attributedText)
             mu.deleteCharacters(in: range)
             textView.attributedText = mu
-            deletedMentionBlockRange = range
+
+            if firstDeletedMentionBlockRange == nil {
+                firstDeletedMentionBlockRange = range
+            }
         }
 
-        return deletedMentionBlockRange
+        return firstDeletedMentionBlockRange
     }
 
     private func handleDeleteText(
