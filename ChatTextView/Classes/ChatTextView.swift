@@ -390,7 +390,7 @@ extension ChatTextView: UITextViewDelegate {
     ) -> Bool {
         let prevFullRange = NSRange(location: 0, length: textView.attributedText.length)
 
-        let beforeRange = NSRange(location: max(range.location - 1, 0), length: 1)
+        let beforeRange = NSRange(location: range.location - 1, length: 1)
         let beforeRangeCheck = NSIntersectionRange(prevFullRange, beforeRange)
         if (beforeRangeCheck.length == 0) {
             // invalid beforeRange
