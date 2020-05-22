@@ -31,7 +31,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ChatTextView: 901bb69e8da45f9437aadfdb0f48e27717d0600b
+  ChatTextView: df849735bafad1cb399e9ac06d03ae57baed2533
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   Mockit: 09492d654a2945096603d76ea77b131bdcfb2233
   Nimble: 4ab1aeb9b45553c75b9687196b0fa0713170a332
